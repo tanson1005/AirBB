@@ -1,14 +1,23 @@
 # Tên Dự Án
-- <AirBB>
+- ```AirBB```
 ## Mô Tả
 
-Dự án này là một ứng dụng web để [mô tả chức năng hoặc mục tiêu của ứng dụng].
+Dự án này là một ứng dụng web để đặt phòng khi đi du lịch.
 
-## Cài Đặt
+## Các Chức Năng Chính
+- login/logout
+- Signup/signin
+- Bình luận
+- Đặt phòng
+- Thông tin người dùng
+- Đặt Phòng
+- Cập nhật thông tin
 
+## API
+- <https://airbnbnew.cybersoft.edu.vn/swagger/index.html
 ### Yêu Cầu
 
-- Node.js (phiên bản 14 trở lên)
+- Node.js (phiên bản 18 trở lên)
 - npm (phiên bản 6 trở lên)
 
 ### Bước Cài Đặt
@@ -16,7 +25,7 @@ Dự án này là một ứng dụng web để [mô tả chức năng hoặc m�
 1. Clone repository:
 
     ```bash
-    git clone https://github.com/your-username/your-project.git
+    git clone https://github.com/tanson1005/AirBB
     ```
 
 2. Di chuyển vào thư mục dự án:
@@ -38,4 +47,4 @@ Dự án này là một ứng dụng web để [mô tả chức năng hoặc m�
 Chạy ứng dụng trong môi trường phát triển:
 
 ```bash
-npm start
+npm run dev

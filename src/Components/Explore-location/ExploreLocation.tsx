@@ -41,10 +41,10 @@ function ExploreLocation() {
   
   return (
     <div className='explore-location'>
-      {/* <h1>Khám phá những đặc điểm nổi bật gần đây</h1> */}
+      <h1>Khám phá những đặc điểm nổi bật gần đây</h1>
       <Box sx={{ flexGrow: 1 }} className='mui-box'>
       <ThemeProvider theme={themeCustom}>
-      {/* <Grid container spacing={2} className='mui-grid'>
+      <Grid container spacing={2} className='mui-grid'>
           {
             result.map((itemReturn : ILocationItem) => {
               return (
@@ -64,7 +64,7 @@ function ExploreLocation() {
               )
             })
           }
-        </Grid> */}
+        </Grid>
       </ThemeProvider>
       <Swiper
         spaceBetween={30}

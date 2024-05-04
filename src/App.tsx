@@ -1,13 +1,17 @@
-import React, { Fragment } from 'react'; // Import Fragment from 'react'
+import { Fragment, lazy } from 'react' // Import Fragment from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomeTemplate from './Template/Home-template/HomeTemplate';
 
+const HomePage = lazy(() => { return import('./Pages/Home-page/HomePage') })
+
 function App() {
   return (
-    <Fragment> {/* Use Fragment here */}
+    <Fragment>
       <BrowserRouter>
         <Routes>
-          <Route path='' element={<HomeTemplate />} />
+          <Route path='' element={<HomeTemplate />}>
+            <Route path='' element={<HomePage />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </Fragment>

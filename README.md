@@ -17,7 +17,7 @@ Dự án này là một ứng dụng web để đặt phòng khi đi du lịch.
 - <https://airbnbnew.cybersoft.edu.vn/swagger/index.html
 ### Yêu Cầu
 
-- Node.js (phiên bản 18 trở lên)
+- ReactJS (phiên bản 18 trở lên)
 - npm (phiên bản 6 trở lên)
 
 ### Bước Cài Đặt

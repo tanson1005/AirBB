@@ -18,6 +18,19 @@ export const getInspectOfSearchPage = createAsyncThunk(
     }
 )
 
+export const getListRoomByIdLocation = createAsyncThunk(
+    'locationSlice/getListRoomByIdLocation',
+    async (id: string | undefined) => {
+        try {
+            const resp = await axiosInterceptorWithCybertoken.get(`/api/phong-thue/lay-phong-theo-vi-tri?maViTri=${id}`)
+            return resp
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
+
 const initialState: ILocationState = {
     inspectOfSearchPage: [],
     listRoomByIdLocation: [],
@@ -32,6 +45,9 @@ export const locationSlice = createSlice({
     extraReducers: (build) => {
         build.addCase(getInspectOfSearchPage.fulfilled, (state, action) => {
             state.inspectOfSearchPage = action.payload?.data.content;
+        })
+        build.addCase(getListRoomByIdLocation.fulfilled, (state, action) => {
+            state.listRoomByIdLocation = action.payload?.data.content
         })
     }
 })

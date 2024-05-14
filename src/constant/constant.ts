@@ -32,6 +32,45 @@ export interface ILocationItem {
     tenViTri: string,
     tinhThanh: string
 }
+
+export interface IValuesLogin {
+    email: string,
+    password: string,
+}
+
+export interface IValues extends IValuesLogin {
+    checkPassword: string,
+    user: string,
+    name: string,
+    email: string,
+    phone: string,
+    birthday: string,
+    role: string,
+    gender: boolean,
+}
+export interface IProfile extends IValuesLogin {
+    id: number,
+    name: string,
+    phone:string,
+    birthday: string,
+    avatar: string,
+    gender: boolean,
+    role:string,
+}
+
+export interface IComment{ 
+    ngayBinhLuan: string,
+    noiDung: string,
+    saoBinhLuan: number,
+    tenNguoiBinhLuan: string, 
+    avatar: string
+}
+
+export interface ICommentId extends IComment{
+    id: number,
+    maPhong: number
+}
+
 export interface IBookRoom{ 
     id: number,
     maPhong: number,

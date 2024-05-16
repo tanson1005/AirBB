@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //templates
 import HomeTemplate from './Template/Home-template/HomeTemplate';
 import DetailTemplate from './Template/Detail-template/DetailTemplate'
+import RoomTemplate from './Template/Room-template/RoomTemplate'
 //Lazy
 const HomePage = lazy(() => { return import('./Pages/Home-page/HomePage') })
 const RoomList = lazy(() => { return import('./Pages/Room-list/RoomList') })
@@ -17,8 +18,10 @@ function App() {
             <Route path=':idLocation' element={<RoomList />}></Route>
             <Route path='' element={<HomePage />}></Route>
           </Route>
-          <Route path='Detail' element={<DetailTemplate />}></Route>
-          <Route path='profile' element={<PersonalInformation/>}></Route>
+          <Route path='Detail' element={<DetailTemplate />}>
+            <Route path='profile' element={<PersonalInformation/>}></Route>
+          </Route>
+          <Route path='room' element={<RoomTemplate />}></Route>
         </Routes>
       </BrowserRouter>
     </Fragment>

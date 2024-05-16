@@ -8,6 +8,8 @@ import RoomTemplate from './Template/Room-template/RoomTemplate'
 const HomePage = lazy(() => { return import('./Pages/Home-page/HomePage') })
 const RoomList = lazy(() => { return import('./Pages/Room-list/RoomList') })
 const PersonalInformation = lazy(()=>{return import('./Pages/Personal-information/PersonalInformation')})
+const Detail = lazy(()=>{return import('./Pages/Detail-room/DetailRoom')})
+
 
 function App() {
   return (
@@ -21,7 +23,9 @@ function App() {
           <Route path='Detail' element={<DetailTemplate />}>
             <Route path='profile' element={<PersonalInformation/>}></Route>
           </Route>
-          <Route path='room' element={<RoomTemplate />}></Route>
+          <Route path='room' element={<RoomTemplate />}>
+            <Route path=':idDetail' element={<Detail />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </Fragment>

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@400;700&display=swap');
+
+// Change colors and fonts
+$body-color: #007bff;
+$button-hover-color: #0056b3;
+$border-color: #ccc;
+$light-gray: #f9f9f9;
+$dark-gray: #000;
+
+// Set general font
+body, .register-form-container, h1, label, input, button, select {
+  font-family: 'Ubuntu Sans', sans-serif;
+}
+
+.register-template{
+    .background-container {
+        position: relative; /* Cần thiết để vị trí tương đối hoạt động cho children */
+        width: 100%;
+        height: 100%;
+    }
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(8px); /* Làm mờ hình ảnh nền */
+      }
+}

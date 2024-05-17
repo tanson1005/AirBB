@@ -69,11 +69,11 @@ function Detail({dataDetail, location, comment, commentIdList}:IProps) {
         </div>
         <div className='detail-saveShare'>
             <div className='share'>
-                <i className="fa-solid fa-arrow-up-from-bracket"></i>
+                {/* <i className="fa-solid fa-arrow-up-from-bracket"></i> */}
                 <span className='onDetail'>Chia sẻ</span>
             </div>
             <div className='save'>
-                <i className="fa-regular fa-heart"></i>
+                {/* <i className="fa-regular fa-heart"></i> */}
                 <span className='onDetail'>Lưu</span>
             </div>
         </div>
@@ -88,7 +88,7 @@ function Detail({dataDetail, location, comment, commentIdList}:IProps) {
             <div className='detail-left-heading'>
                 <div>
                     <h2>Toàn bộ căn hộ Condo</h2>
-                    <p>{dataDetail.khach} khách · {dataDetail.phongNgu} phòng ngủ · {dataDetail.phongTam} phòng tắm</p>
+                    <p>dành cho {dataDetail.khach} khách - Bao gồm {dataDetail.phongNgu} phòng ngủ và {dataDetail.phongTam} phòng tắm</p>
                 </div>
                 <img className="avatar" src={ava} alt="" />
             </div>
@@ -107,15 +107,14 @@ function Detail({dataDetail, location, comment, commentIdList}:IProps) {
             <div className='detail-decription-more'>
                 <div className='detail-translate'>
                     <h3>Dịch sang Tiếng Việt</h3>
-                    <i className="fa-solid fa-language"></i>
                 </div>
                 <p className='detail-describe'>{dataDetail.moTa}</p>
-                <AlertDialogSlide buttonName={`Hiển Thị Thêm >`} title={"About this space"} description={dataDetail.moTa}/>
+                <AlertDialogSlide buttonName={`Hiển Thị Thêm`} title={"About this space"} description={dataDetail.moTa}/>
             </div>
             <hr />
             <div className='detail-sleep'>
                 <h2>Nơi bạn ngủ</h2>
-                <img src="/src/assets/Image/bed.jpg" alt="" />
+                <img src="/src/assets/Image/bed.jpeg" alt="" />
                 <h3>Giường</h3>
                 <p>{dataDetail.giuong} cái giường</p>
             </div>
@@ -131,7 +130,7 @@ function Detail({dataDetail, location, comment, commentIdList}:IProps) {
             <section className='detail-purchase'>
                 <h1>${dataDetail.giaTien}<span> / đêm</span></h1>
                 <div className='detail-sub-heading yeet'>
-                    <i className="fa-solid fa-star"></i>
+                    <i className="fa fa-star"></i>
                     <p className='rating'>{averageStar ? averageStar: "0"}</p>
                     <p>·</p>
                     <p className='onDetail'>({comment.length} đánh giá)</p>
@@ -145,7 +144,7 @@ function Detail({dataDetail, location, comment, commentIdList}:IProps) {
 
       <section className='detail-comment'>
         <div className='detail-comment-rating'>
-            <i className="fa-solid fa-star"></i>
+            <i className="fa fa-star"></i>
             <h1>{averageStar ? averageStar: "0"}</h1>
             <p>·</p>
             <h1 className='rating-comment'>{comment.length} đánh giá</h1>

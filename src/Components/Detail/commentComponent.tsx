@@ -135,42 +135,42 @@ export function CommentSlider({ classes }: IPropsSlider) {
                 <p>Cleanliness</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
             <div className='col-md-6 col-sm-12 d-flex justify-content-between align-items-center pl-md-5 mb-2'>
                 <p>Accuracy</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
             <div className='col-md-6 col-sm-12 d-flex justify-content-between align-items-center mb-2'>
                 <p>Communication</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
             <div className='col-md-6 col-sm-12 d-flex justify-content-between align-items-center pl-md-5 mb-2'>
                 <p>Location</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
             <div className='col-md-6 col-sm-12 d-flex justify-content-between align-items-center mb-2'>
                 <p>Check-in</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
             <div className='col-md-6 col-sm-12 d-flex justify-content-between align-items-center pl-md-5 mb-2'>
                 <p>Value</p>
                 <div className='comment-slider'>
                     <div></div>
-                    <p>4.9</p>
+                    <p>5.0</p>
                 </div>
             </div>
         </div>

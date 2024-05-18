@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@400;700&display=swap');
+
+// Change colors and fonts
+$body-color: #ff385c; // Updated button color
+$button-hover-color: darken(#ff385c, 10%); // Updated button hover color
+$border-color: #ccc;
+$facebook-blue: #5f8beb;
+$light-gray: #f9f9f9;
+$dark-gray: #000;
+
+// Set general font
+body, .login-form-container, h1, label, input, button, .remember-me-checkbox {
+  font-family: 'Ubuntu Sans', sans-serif;
+  font-size: 20px; // Set font size to 20px
+}
+
+// Define a new class for the login header with a font size of 30px
+.login-header {
+  font-size: 30px;
+}
+
+// Set up the input password section
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+// Set up the login form
+.login-form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $light-gray;
+  padding: 20px;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 100%;
+
+  h1 {
+    text-align: center;
+    font-size: 50px; // Adjusted for a larger heading size
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid $border-color;
+    border-radius: 3px;
+    font-size: 20px; // Set font size to 20px
+  }
+
+  button {
+    padding: 10px 15px;
+    background-color: $body-color; // Use the new button color
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 20px; // Set font size to 20px
+
+    &:hover {
+      background-color: $button-hover-color; // Use the adjusted hover color
+    }
+  }
+
+  // Ensure the FormControl component has full width
+  .mui-form-control {
+    width: 100%;
+  }
+
+  // Setup for remember login
+  .remember-me-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .remember-me-checkbox {
+      label {
+        display: flex;
+        align-items: center;
+
+        input[type="checkbox"] {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  // Set up social login
+  .social-login-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .btn-face, .btn-google {
+    font-size: 16px;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc((100% - 10px) / 2);
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid $border-color;
+    background-color: #fff;
+    transition: all .4s;
+    text-decoration: none;
+    color: $facebook-blue;
+    position: relative;
+    font-weight: 700;
+
+    &:hover {
+      background-color: lighten($facebook-blue, 10%);
+    }
+  }
+
+  // Set up social login buttons
+  .social-login-button {
+    padding: 10px;
+    background-color: transparent; 
+    color: $dark-gray;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px; // Set font size to 20px
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+
+  // Set up the separator
+  .or-divider {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .or-divider-text {
+    background-color: $light-gray;
+    padding: 0 10px;
+  }
+
+  // Set up the Google icon
+  .google-icon {
+    background-image: url('../../assets/Image/Google.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 19px;
+    height: 19px;
+    margin-right: 10px;
+    padding-bottom: 1px;
+  }
+}
+
+// Setup for Facebook icon
+.btn-face {
+  font-size: 20px;
+  margin-right: 10px;
+  padding-bottom: 1px;
+
+  svg {
+    font-size: inherit;
+    margin-right: 10px;
+    padding-bottom: 1px;
+  }
+}
+
+// Setup for the signup container
+.signup-container {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+
+  .signup-link {
+    color: $body-color;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 5px;
+
+    &:hover {
+      color: $button-hover-color;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive styles for screens with a maximum width of 768px
+@media (max-width: 768px) {
+  .login-form-container {
+    // Adjust padding for medium-sized screens
+    padding: 15px;
+  }
+
+  .login-form-container h1 {
+    // Reduce font size for the title on medium-sized screens
+    font-size: 1.5rem;
+  }
+
+  .login-form-container input {
+    // Reduce padding for input fields on medium-sized screens
+    padding: 6px;
+  }
+
+  .login-form-container button {
+    // Reduce padding for buttons on medium-sized screens
+    padding: 8px 12px;
+  }
+
+  .social-login-container {
+    // Reduce gap between social login buttons on medium-sized screens
+    gap: 15px;
+  }
+}
+
+// Responsive styles for screens with a maximum width of 480px
+@media (max-width: 480px) {
+  .login-form-container {
+    // Adjust padding for small-sized screens
+    padding: 10px;
+  }
+
+  .login-form-container h1 {
+    // Further reduce font size for the title on small-sized screens
+    font-size: 1.2rem;
+  }
+
+  .login-form-container input {
+    // Further reduce padding for input fields on small-sized screens
+    padding: 4px;
+  }
+
+  .login-form-container button {
+    // Further reduce padding for buttons on small-sized screens
+    padding: 6px 10px;
+  }
+
+  .social-login-container {
+    // Change layout to vertical and reduce gap between social login buttons on small-sized screens
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-face, .btn-google {
+    width: 100% !important; // Add !important to ensure it takes the full width
+    font-size: 14px;
+    height: 35px;
+  }
+}

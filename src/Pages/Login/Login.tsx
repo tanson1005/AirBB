@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import './login.scss'; // Import CSS file for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon for using icons
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import icons for password visibility toggle
@@ -7,7 +7,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { regex, ACCESS_TOKEN, ACCESS_USER_ID } from '../../constant/constant';
-import Button from '@mui/material/Button';
 import { FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
 import { setLocal } from '../../utils/utils';
 import swal from 'sweetalert';
@@ -16,7 +15,6 @@ import { axiosInterceptorWithCybertoken } from '../../services/services';
 const LoginForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -44,18 +42,6 @@ const LoginForm = () => {
       }
     },
   });
-
-  useEffect(() => {
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
-    const rememberedPassword = localStorage.getItem('rememberedPassword');
-    const rememberedRememberMe = localStorage.getItem('rememberMe');
-
-    if (rememberedRememberMe === 'true') {
-      formik.setFieldValue('email', rememberedEmail || '');
-      formik.setFieldValue('password', rememberedPassword || '');
-      setRememberMe(true);
-    }
-  }, [formik]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -114,7 +100,7 @@ const LoginForm = () => {
 
       {/* Signup link */}
       <div className="signup-container">
-        Not a member?<NavLink to="/auth/signup" className="signup-link"> Sign up now</NavLink>
+        Not a member?<NavLink to="/auth/register" className="signup-link"> Sign up now</NavLink>
       </div>
     </div>
   );

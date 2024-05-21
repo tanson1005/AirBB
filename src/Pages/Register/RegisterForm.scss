@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@400;700&display=swap');
+
+/* Thiết lập biến màu */
+$body-color: #ff385c;
+$button-hover-color: #dc004e; // Màu nền khi di chuột qua nút
+
+/* Thay đổi màu sắc và phông chữ */
+:root {
+  --body-color: #007bff;
+  --button-hover-color: #0056b3;
+  --border-color: #ccc;
+  --light-gray: #f9f9f9;
+  --dark-gray: #000;
+}
+
+/* Đặt phông chữ chung */
+body, .register-form-container, h1, label, input, button, select {
+  font-family: 'Ubuntu Sans', sans-serif;
+}
+
+/* Thiết lập phần input password */
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Thiết lập form đăng ký */
+.register-form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--light-gray);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.register-form-container h1 {
+  text-align: center;
+}
+
+.register-form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form-container label {
+  margin-bottom: 5px;
+}
+
+.register-form-container input,
+.register-form-container select {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+}
+
+.register-form-container button {
+  padding: 10px 15px;
+  background-color: $body-color;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.register-form-container button:hover {
+  background-color: $button-hover-color;
+}
+
+/* Thiết lập liên kết đăng nhập */
+.register-form-container .login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.register-form-container .login-container .login-link {
+  text-decoration: none;
+  color: var(--dark-gray);
+}
+
+.register-form-container .login-container .login-link:hover {
+  text-decoration: underline;
+  color: var(--body-color);
+}
+
+/* Thiết lập responsive cho màn hình có chiều rộng tối đa 768px */
+@media (max-width: 768px) {
+  .register-form-container {
+    padding: 15px;
+  }
+
+  .register-form-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .register-form-container input,
+  .register-form-container select {
+    padding: 6px;
+  }
+
+  .register-form-container button {
+    padding: 8px 12px;
+  }
+}
+
+/* Thiết lập responsive cho màn hình có chiều rộng tối đa 480px */
+@media (max-width: 480px) {
+  .register-form-container {
+    padding: 10px;
+  }
+
+  .register-form-container h1 {
+    font-size: 1.2rem;
+  }
+
+  .register-form-container input,
+  .register-form-container select {
+    padding: 4px;
+  }
+
+  .register-form-container button {
+    padding: 6px 10px;
+  }
+}
+
+/* Đoạn mã mới thêm vào */
+#btn-Register {
+  width: 100%; // Thiết lập chiều rộng 100%
+  background-color: $body-color; // Đặt màu nền theo biến $body-color
+  color: #fff; // Đặt màu chữ là trắng
+  border: none; // Loại bỏ viền
+  border-radius: 3px; // Bo góc nút
+  cursor: pointer; // Đổi con trỏ chuột thành dấu nhấp chuột khi di chuột qua nút
+  padding: 10px 15px; // Đặt khoảng cách giữa chữ và viền nút
+  margin-top: 10px; // Đặt khoảng cách phía trên của nút
+}
+.css-1r2nefe-MuiFormControl-root {
+  margin: 0; /* Ghi đè lên thuộc tính margin */
+}

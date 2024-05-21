@@ -11,7 +11,7 @@ const RoomList = lazy(() => { return import('./Pages/Room-list/RoomList') })
 const PersonalInformation = lazy(()=>{return import('./Pages/Personal-information/PersonalInformation')})
 const Detail = lazy(()=>{return import('./Pages/Detail-room/DetailRoom')})
 const Login = lazy(() => { return import('./Pages/Login/Login') })
-
+const Register = lazy(()=>{return import('./Pages/Register/Register')})
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
           </Route>
           <Route path='auth' element={<RegisterTemplate />}>
             <Route path='login' element={<Login/>}></Route>
+            <Route path='register' element={<Register/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

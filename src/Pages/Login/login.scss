@@ -9,7 +9,7 @@ $light-gray: #f9f9f9;
 $dark-gray: #000;
 
 // Set general font
-body, .login-form-container, h1, label, input, button, .remember-me-checkbox {
+.login-form-container, h1, label, input, button, .remember-me-checkbox {
   font-family: 'Ubuntu Sans', sans-serif;
   font-size: 20px; // Set font size to 20px
 }

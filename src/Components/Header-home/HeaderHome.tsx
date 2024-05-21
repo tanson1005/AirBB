@@ -38,7 +38,7 @@ const style = {
     borderRadius: '8px',
   };
 
-const HeaderHome = () => {
+const   HeaderHome = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const getAcessToken: string = getLocal(ACCESS_TOKEN)

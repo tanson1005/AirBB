@@ -24,7 +24,7 @@ function RoomItem({ listRoomItem }:IProps) {
                 <p className='room-description'>{listRoomItem.moTa}</p>
             </div>
             <div className="room-item-price">
-                <i className="fa-regular fa-heart icon-favorite"></i>
+                <i className="fa fa-heart" aria-hidden="true"></i>
                 <p><span>{`${listRoomItem.giaTien}$`}</span>/ đêm</p>
             </div>
         </div>

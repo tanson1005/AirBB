@@ -64,17 +64,17 @@ export function Profile({profileData, bookRoomData}: IProps){
                         <div className="profile-section-description">
                             <i className="fa-regular fa-circle-check"></i>
                             <h3>Xác Minh Danh Tính</h3>
-                            <p>Xác thực danh tính của bạn với huy hiệu xác minh danh tính</p>
-                            <button className="profile-button" type="button">Nhận Huy Hiệu</button>
+                            <p>Xác minh danh tính để nhận điểm</p>
+                            <button className="profile-button" type="button">Nhận Điểm</button>
                             <hr className="my-4" />
-                            <h2>{profileData?.name} đã xác nhận</h2>
-                            <p className="mt-3"><i className="fa-solid fa-check mr-2"></i>Địa chỉ Email</p>
+                            <h2>Bạn {profileData?.name} đã xác nhận các nền tản</h2>
+                            <p className="mt-3"><i className="fa fa-check" aria-hidden="true"></i> Địa chỉ Email</p>
                         </div>                
                     </div>
                 </div>
                 <div className="profile-bookRoom-section col-lg-9 pl-lg-5 mt-5 mt-lg-0">
                     <h1>Xin Chào, tôi là {profileData?.name}</h1>
-                    <p>Bắt đầu tham gia vào năm 2021</p>
+                    <p>Bắt đầu tham gia vào năm {new Date().getFullYear()}</p>
                     <UpdateProfile profileData={profileData}/>
                     
                     <h1 className="mt-4">Phòng đã thuê</h1>
@@ -116,7 +116,7 @@ export function Profile({profileData, bookRoomData}: IProps){
 
                             setData(newData)
                         }
-                    }}>{hide?  `Hiển thị ${bookRoomData?.length} phòng đã đặt` : "Ẩn hiện thị phòng"}</button>}
+                    }}>{hide?  `Số phòng bạn đã đặt là ${bookRoomData?.length}` : "Ẩn hiện thị phòng"}</button>}
                 
                     
                 </div>  

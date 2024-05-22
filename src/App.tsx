@@ -5,6 +5,7 @@ import HomeTemplate from './Template/Home-template/HomeTemplate';
 import DetailTemplate from './Template/Detail-template/DetailTemplate'
 import RoomTemplate from './Template/Room-template/RoomTemplate'
 import RegisterTemplate from './Template/Register-template/RegisterTemplate'
+import AdminTemplate from './Template/Admin-template/AdminTemplate'
 //Lazy
 const HomePage = lazy(() => { return import('./Pages/Home-page/HomePage') })
 const RoomList = lazy(() => { return import('./Pages/Room-list/RoomList') })
@@ -32,6 +33,7 @@ function App() {
             <Route path='login' element={<Login/>}></Route>
             <Route path='register' element={<Register/>}></Route>
           </Route>
+          <Route path='@@admin' element={<AdminTemplate />}></Route>
         </Routes>
       </BrowserRouter>
     </Fragment>

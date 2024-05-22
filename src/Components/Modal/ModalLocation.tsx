@@ -63,7 +63,7 @@ export default function BasicModal({ children, value, setValue }: TProps) {
                             return (
                                 <NavLink key={`${index}${item.id}`} to={`/${item.id}`}>
                                 <div className="location-item">
-                                    <i className="fa-solid fa-location-dot"></i>
+                                    <i className='fa-solid fa-location-dot'></i>
                                     <p>{`${item.tenViTri}, ${item.tinhThanh}`}</p>
                                 </div>
                                 </NavLink>

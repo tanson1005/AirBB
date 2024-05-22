@@ -109,8 +109,8 @@ const HeaderHome = () => {
                                 <BasicModal value={valueInput} setValue={setValue}>
                                     <div>
                                         <p>Địa điểm</p>
-                                        <span className='under-content-span'>{valueInput ? valueInput : 'Hãy nhập địa điểm tìm kiếm'}</span>
-                                        <span className='mobile-span'>{valueInput ? valueInput : 'Hãy nhập địa điểm'}</span>
+                                        <span className='under-content-span'>{valueInput ? valueInput : 'Bạn muốn đến đâu'}</span>
+                                        <span className='mobile-span'>{valueInput ? valueInput : 'Bạn muốn đến đâu'}</span>
                                     </div>
                                 </BasicModal>
                             </div>

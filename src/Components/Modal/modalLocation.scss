@@ -1,36 +1,56 @@
-
-.location-item{
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    font-size: 1.8rem;
-    margin-top: 2rem;
-    i{
+.modal-location {
+    .btn-modal {
+      /* Your button styles */
+    }
+  
+    .mui-box-location {
+      height: 500px;
+      overflow-y: auto;
+      padding: 1rem; /* Add padding if needed for better layout */
+    }
+  
+    .location-item {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      font-size: 1.8rem;
+      margin-top: 2rem;
+  
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 7px;
+        object-fit: cover;
+        background-color: #8080804c;
+      }
+  
+      i {
         background-color: #8080804c;
         width: 4rem;
         height: 4rem;
         text-align: center;
         line-height: 4rem;
         border-radius: 7px;
-    }
-    p{
+      }
+  
+      p {
         margin: 0;
+      }
     }
-}
-
-.mui-box-location{
-    height: 500px;
-    overflow-y: auto;
-}
-
-
-#modal-modal-title{
+  }
+  
+  #modal-modal-title {
     font-size: 1.5rem;
-    input{
-        background-color: #80808033;
-        border: unset;
-        outline: unset;
-        border-radius: 5px;
-        padding: 0 1rem;
+  
+    input {
+      background-color: #80808033;
+      border: unset;
+      outline: unset;
+      border-radius: 5px;
+      padding: 0 1rem;
+      margin-left: 1rem; /* Add margin for better spacing */
+      font-size: 1rem; /* Adjust font size if needed */
+      height: 2rem; /* Adjust height if needed */
     }
-}
+  }
+  

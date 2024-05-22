@@ -1,37 +1,28 @@
-//const
-import { CYBER_TOKEN, ACCESS_TOKEN, BASE_URL } from '../constant/constant'
-//utils
-import { getLocal } from '../utils/utils'
-//axios
-import axios, { AxiosInstance } from 'axios'
+import { axiosInterceptor, axiosInterceptorWithCybertoken } from './axiosInterceptor';
+import { getLocal } from '../utils/utils';
+import { ACCESS_TOKEN, CYBER_TOKEN } from '../constant/constant';
 
+// Chuyển đổi AxiosHeaders thành đối tượng JavaScript thông thường
+const createConfigHeaders = () => {
+  const headers: any = {};
+  headers.token = `${getLocal(ACCESS_TOKEN)}`;
+  headers.tokenCybersoft = CYBER_TOKEN;
+  return headers;
+};
 
-export const axiosInterceptor: AxiosInstance = axios.create({
-    baseURL: BASE_URL,
-    timeout: 180_000
-})
+// Sử dụng đối tượng headers đã chuyển đổi
+axiosInterceptor.interceptors.request.use((config) => {
+  config.headers = createConfigHeaders();
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-axiosInterceptor.interceptors.request.use((config)=>
-{
-        config.headers.token = `${getLocal(ACCESS_TOKEN)}`
-        config.headers.tokenCybersoft  = CYBER_TOKEN
+axiosInterceptorWithCybertoken.interceptors.request.use((config) => {
+  config.headers.tokenCybersoft = CYBER_TOKEN;
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-        return config
-    },
-    (error)=>{
-        return Promise.reject(error)
-    }
-)
-
-export const axiosInterceptorWithCybertoken: AxiosInstance = axios.create({
-    baseURL: BASE_URL,
-    timeout:180_000,
-})
-
-axiosInterceptorWithCybertoken.interceptors.request.use((config)=>{
-    config.headers.tokenCybersoft  = CYBER_TOKEN
-    return config
-},
-(error)=>{
-    return Promise.reject(error)
-})
+export { axiosInterceptor, axiosInterceptorWithCybertoken };

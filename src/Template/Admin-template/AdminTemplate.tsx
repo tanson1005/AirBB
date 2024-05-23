@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import { deleteKey } from '../../utils/utils';
@@ -57,7 +57,7 @@ function AdminTemplate() {
         <AppBar className='menu-bar-header' position="static" sx={{ backgroundColor: 'white' }}>
           <Toolbar>
             <Typography variant="h6" component="div" color="black" sx={{ flexGrow: 1, fontSize: '2rem' }}>
-              Manage System - AirBnb
+              Manage System - AirTS
             </Typography>
             <div>
               <IconButton
@@ -81,7 +81,7 @@ function AdminTemplate() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose} sx={{ fontSize: '1.6rem' }}>
-                  <NavLink to={'/Detail/profile'}>Profile</NavLink>
+                  <Link to={'/Detail/profile'} style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
                 </MenuItem>
                 <hr />
                 <MenuItem onClick={handleLogout} sx={{ fontSize: '1.6rem' }}>Log out</MenuItem>

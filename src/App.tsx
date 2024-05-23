@@ -7,13 +7,16 @@ import RoomTemplate from './Template/Room-template/RoomTemplate';
 import RegisterTemplate from './Template/Register-template/RegisterTemplate';
 import AdminTemplate from './Template/Admin-template/AdminTemplate';
 // Lazy loading components
+//user
 const HomePage = lazy(() => import('./Pages/Home-page/HomePage'));
 const RoomList = lazy(() => import('./Pages/Room-list/RoomList'));
 const PersonalInformation = lazy(() => import('./Pages/Personal-information/PersonalInformation'));
 const Detail = lazy(() => import('./Pages/Detail-room/DetailRoom'));
 const Login = lazy(() => import('./Pages/Login/Login'));
 const Register = lazy(() => import('./Pages/Register/Register'));
+//admin
 const ManageUser = lazy(() => import('./Components/Admin/ManageUser'));
+const ManageRoom = lazy(()=>{return import('./Components/Admin/ManageRoom')})
 
 function App() {
   return (
@@ -37,6 +40,7 @@ function App() {
             </Route>
             <Route path='@@admin' element={<AdminTemplate />}>
               <Route path='user' element={<ManageUser />} />
+              <Route path='roomdetail' element={<ManageRoom/>}></Route>
             </Route>
           </Routes>
         </Suspense>

@@ -6,6 +6,7 @@ import sliceComment from './Comment-slice/CommentSlice'
 import sliceBookingAdmin from './Admin-slice/AdminBookingSlice'
 import sliceUserAdmin from './Admin-slice/AdminUserSlice'
 import sliceRoomAdmin from './Admin-slice/AdminRoomSlice'
+import sliceLocationAdmin from './Admin-slice/AdminLocationSlice'
 import sliceCurrent from './Current-detail/currentDetailManage'
 
 export const store = configureStore({
@@ -17,7 +18,8 @@ export const store = configureStore({
     sliceUserAdmin,
     sliceBookingAdmin,
     sliceRoomAdmin,
-    sliceCurrent,
+    sliceLocationAdmin,
+    sliceCurrent
   },
 })
 

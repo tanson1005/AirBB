@@ -18,6 +18,7 @@ const Register = lazy(() => import('./Pages/Register/Register'));
 const ManageUser = lazy(() => import('./Components/Admin/ManageUser'));
 const ManageRoom = lazy(()=>{return import('./Components/Admin/ManageRoom')})
 const ManageBookedRoom = lazy(()=>{return import('./Components/Admin/ManageBookedRoom')})
+const ManageLocation = lazy(()=>{return import('./Components/Admin/ManageLocation')})
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               <Route path='user' element={<ManageUser />} />
               <Route path='roomdetail' element={<ManageRoom/>}></Route>
               <Route path='booked' element={<ManageBookedRoom/>}></Route>
+              <Route path='location' element={<ManageLocation/>}></Route>
             </Route>
           </Routes>
         </Suspense>

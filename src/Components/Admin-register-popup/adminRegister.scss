@@ -9,7 +9,6 @@
     left: 50%;
     border-radius: 8px;
     overflow: hidden;
-    background-image: url('../../assets/Image/Admin.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -152,17 +151,78 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    .admin-register,
+    .person-update-modal {
+        width: 70%;
+        height: auto;
+        padding: 2rem 1rem;
+
+        .button-group-admin-register {
+            padding: 2rem 1rem;
+            gap: 0.5rem;
+            flex-direction: column;
+            align-items: center;
+            
+            button {
+                width: 80%;
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
+
 @media screen and (max-width: 576.98px) {
+    .admin-register,
+    .person-update-modal {
+        width: 90%;
+        height: auto;
+        padding: 2rem 1rem;
+
+        .button-group-admin-register {
+            padding: 1rem;
+            gap: 0.5rem;
+            flex-direction: column;
+            align-items: center;
+
+            button {
+                width: 100%;
+                font-size: 1.4rem;
+            }
+        }
+    }
+
     .card-detail {
         width: 95%;
-
         .card-wrapper {
             width: unset !important;
         }
     }
 
     .person-update-modal {
-        height: 625px;
+        height: auto;
         width: 95%;
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .admin-register,
+    .person-update-modal {
+        width: 95%;
+        height: auto;
+        padding: 1rem;
+
+        .button-group-admin-register {
+            padding: 1rem;
+            gap: 0.5rem;
+            flex-direction: column;
+            align-items: center;
+
+            button {
+                width: 100%;
+                font-size: 1.2rem;
+            }
+        }
     }
 }

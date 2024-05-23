@@ -30,7 +30,7 @@ export default function PersonModal({ personData, closeModal, openUpdate }: IPro
 
     return (
         <div className="card-detail">
-            <Card sx={{ width: 500, height: 620 }} className='card-wrapper'>
+            <Card sx={{ width: 500, height: 650 }} className='card-wrapper'>
                 <CardMedia
                     sx={{ height: 300 }}
                     image={image}

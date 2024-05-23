@@ -331,7 +331,7 @@ export default function SelectVariants({khachMax, giaTien, phone, dataDetail} : 
         <Box sx={style}>
           <div className= "detail-phone-box">
             <header className='booking-header'> 
-              <button type='button' onClick={() => {setOpen(false)}}><i className="fa-solid fa-less-than"></i></button>
+              <button type='button' onClick={() => {setOpen(false)}}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
               <h3>{inputFilled? "Confirm and pay" :"Request to book"}</h3>
             </header>
             <section className='booking-main' style={{}}>

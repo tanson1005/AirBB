@@ -170,7 +170,7 @@
 .add-location-modal,
 .update-location-modal {
     height: 400px;
-    background-image: url('https://img.freepik.com/premium-photo/rock-podium-tropical-forest-product-presentation-is-view-sky_41470-5023.jpg?w=1480');
+    background-image: url(../../assets/Image/location.jpg);
     background-position: center;
     &::before {
         background-color: #afc5d7b0;
@@ -201,7 +201,7 @@
 
 .update-location-modal {
     height: 600px;
-    background-image: url('https://img.freepik.com/free-photo/falling-leaf-with-blurred-background_23-2148232268.jpg?w=1800&t=st=1688528493~exp=1688529093~hmac=a5ead6726b20554f366ebd5f098964ba5a9ddd8ac5b162df61cda5869c2b2df0');
+    background-image: url('../../assets/Image/Update.jpg');
     &::before {
         background-color: #daddbf66;
     }

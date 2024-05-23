@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '@mui/material/Menu';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import { deleteKey } from '../../utils/utils';

@@ -27,8 +27,8 @@ function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path='' element={<HomeTemplate />}>
-              <Route path=':idLocation' element={<RoomList />} />
-              <Route path='home' element={<HomePage />} />
+              <Route path='list/:idLocation' element={<RoomList />} />
+              <Route path='' element={<HomePage />} />
             </Route>
             <Route path='Detail' element={<DetailTemplate />}>
               <Route path='profile' element={<PersonalInformation />} />

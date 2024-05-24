@@ -17,6 +17,7 @@ import { useLoginRenderAva } from './headerHomeLogic';
 import { RootState } from '../../redux/store';
 import { setDefaultProfile } from '../../redux/user-slice/UserSlice';
 import AirbnbLogo from '../../assets/Image/Airbnb_logo.png';
+import useProfileAvatar from '../../hooks/useProfileAvatar'; 
 import './headerHome.scss';
 
 const modalStyle = {
@@ -60,6 +61,7 @@ const HeaderHome = () => {
     };
 
     const avaName = useLoginRenderAva(getAccessToken);
+    const avatarUrl = useProfileAvatar();
 
     const handleLogOut = () => {
         deleteKey(ACCESS_TOKEN);
@@ -150,7 +152,7 @@ const HeaderHome = () => {
                         ) : (
                             <div>
                                 <Button onClick={handleOpen} sx={{ width: '40px', height: '40px', borderRadius: '50%', minWidth: 'unset' }}>
-                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>{avaName ? avaName : 'N'}</Avatar>
+                                    <Avatar src={avatarUrl ? avatarUrl : '/path/to/default/avatar.png'} sx={{ bgcolor: deepOrange[500] }}>{avaName ? avaName : 'N'}</Avatar>
                                 </Button>
                                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                                     <Box sx={modalStyle} className='mui-box-avatar'>

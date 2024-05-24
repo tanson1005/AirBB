@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route path='' element={<HomeTemplate />}>
               <Route path=':idLocation' element={<RoomList />} />
-              <Route path='' element={<HomePage />} />
+              <Route path='home' element={<HomePage />} />
             </Route>
             <Route path='Detail' element={<DetailTemplate />}>
               <Route path='profile' element={<PersonalInformation />} />

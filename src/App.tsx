@@ -6,9 +6,10 @@ import DetailTemplate from './Template/Detail-template/DetailTemplate';
 import RoomTemplate from './Template/Room-template/RoomTemplate';
 import RegisterTemplate from './Template/Register-template/RegisterTemplate';
 import AdminTemplate from './Template/Admin-template/AdminTemplate';
+import HomePage from './Pages/Home-page/HomePage';
 // Lazy loading components
 //user
-const HomePage = lazy(() => import('./Pages/Home-page/HomePage'));
+// const HomePage = lazy(() => import('./Pages/Home-page/HomePage'));
 const RoomList = lazy(() => import('./Pages/Room-list/RoomList'));
 const PersonalInformation = lazy(() => import('./Pages/Personal-information/PersonalInformation'));
 const Detail = lazy(() => import('./Pages/Detail-room/DetailRoom'));

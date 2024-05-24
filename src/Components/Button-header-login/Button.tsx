@@ -13,7 +13,7 @@ const ButtonHeader: React.FC<TProps> = ({ children }: TProps) => {
     <>
       <Button
         className="button-header" // Add the class name to apply SCSS styles
-        type="ghost"
+        type="default"
         onClick={() => setModal1Open(true)}
       >
         {children}

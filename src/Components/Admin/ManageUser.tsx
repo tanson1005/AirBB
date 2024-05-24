@@ -81,7 +81,11 @@ function ManageUser() {
 
   React.useEffect(() => { dispatch(getUserByPhanTrang({ pageIndex: page, keywords: searchKey })); }, [page, searchKey]);
 
-  const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => { setPage(page); };
+
+  const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => {
+    console.log(e)
+    setPage(page); 
+    };
 
   return (
     <div className='manage-user'>

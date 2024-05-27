@@ -1,4 +1,3 @@
-//react
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //mui ui
@@ -24,16 +23,17 @@ import { ILocationItem } from '../../constant/constant';
 import { axiosInterceptor } from '../../services/services';
 
 function ManageLocation() {
-    const dispatch  = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>()
     const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(1)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [show, setShow] = React.useState(false)
-    const [paramsId,setParamsId]= React.useState<number>()
+    const [paramsId, setParamsId] = React.useState<number>()
     const [searchKey, setSearchKey] = React.useState("")
-    const refSearch = React.useRef<HTMLInputElement>();
-    const [paramsData,setParamsData] = React.useState<ILocationItem>({id:-1,hinhAnh:'',quocGia:'',tenViTri:'',tinhThanh:''})
+    const refSearch = React.useRef<HTMLInputElement>(null);
+    const [paramsData, setParamsData] = React.useState<ILocationItem>({ id: -1, hinhAnh: '', quocGia: '', tenViTri: '', tinhThanh: '' })
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'Mã', width: 70, align: 'center', headerAlign: 'center' },
         { field: 'tenViTri', headerName: 'Tên vị trí', width: 200, align: 'center', headerAlign: 'center' },
@@ -63,7 +63,7 @@ function ManageLocation() {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-              
+
                 const onClick2 = (e: React.MouseEvent) => {
                     e.stopPropagation()
                     setShow(true)
@@ -72,37 +72,37 @@ function ManageLocation() {
                 };
                 const onClick3 = (e: React.MouseEvent) => {
                     e.stopPropagation()
-                    try{ 
+                    try {
                         swal({
-                          title: "Bạn có chắc chắn muốn xóa địa điểm này?",
-                          text: "Không thể quay lại sau khi xóa",
-                          icon: "warning",
-                          buttons: [
-                            'Không xóa',
-                            'Xóa!'
-                          ],
-                          dangerMode: true,
-                        }).then(function(isConfirm) {
-                          if (isConfirm) {
-                            swal({
-                              title: 'Xóa thành công!',
-                              text: `Người địa điểm với tên ${params.row.tenViTri} đã bị xóa`,
-                              icon: 'success'
-                            }).then(async() => {
-                                await axiosInterceptor.delete(`/api/vi-tri/${params.row.id}`);
-                                dispatch(getLocationByPhanTrang({pageIndex: page,keywords:""}))
-                            });
-                          } else {
-                            swal("Hủy thành công",  `Vị trí ${params.row.tenViTri} chưa bị xóa`, "error");
-                          }
+                            title: "Bạn có chắc chắn muốn xóa địa điểm này?",
+                            text: "Không thể quay lại sau khi xóa",
+                            icon: "warning",
+                            buttons: [
+                                'Không xóa',
+                                'Xóa!'
+                            ],
+                            dangerMode: true,
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                swal({
+                                    title: 'Xóa thành công!',
+                                    text: `Người địa điểm với tên ${params.row.tenViTri} đã bị xóa`,
+                                    icon: 'success'
+                                }).then(async () => {
+                                    await axiosInterceptor.delete(`/api/vi-tri/${params.row.id}`);
+                                    dispatch(getLocationByPhanTrang({ pageIndex: page, keywords: "" }))
+                                });
+                            } else {
+                                swal("Hủy thành công", `Vị trí ${params.row.tenViTri} chưa bị xóa`, "error");
+                            }
                         })
-                        
-                      } catch(error) { 
+
+                    } catch (error) {
                         console.log(error)
                         swal("Thất bại, xóa thất bại!", {
-                          icon: "error",
+                            icon: "error",
                         });
-                      }
+                    }
                 };
                 return (
                     <div className="button-group">
@@ -113,36 +113,38 @@ function ManageLocation() {
             }
         }
     ];
-    const rows:ILocationItem[] = [
+
+    const rows: ILocationItem[] = [
         {
             id: 1,
             tenViTri: "Quận 1",
             tinhThanh: "Hồ Chí Minh",
             quocGia: "Việt Nam",
             hinhAnh: "https://airbnbnew.cybersoft.edu.vn/images/vt1.jpg"
-          },
+        },
     ]
-    const dataRetrieve = useSelector((state: RootState)=>state.sliceLocationAdmin.currentLocationbyPhanTrang)
-    const newRows = dataRetrieve.data ? dataRetrieve.data : rows 
 
-    React.useEffect(() => { 
-        dispatch(getLocationByPhanTrang({pageIndex: page, keywords: searchKey}))
-      }, [page, searchKey])
+    const dataRetrieve = useSelector((state: RootState) => state.sliceLocationAdmin.currentLocationbyPhanTrang)
+    const newRows = dataRetrieve?.data ?? rows
+
+    React.useEffect(() => {
+        dispatch(getLocationByPhanTrang({ pageIndex: page, keywords: searchKey }))
+    }, [page, searchKey])
+
     const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => {
         setPage(page)
-        return e.target
-     }
+    }
+
     return (
         <div className='manage-location'>
             <Container fixed={true} className='mui-container-manage'>
                 <Button className='button-add-admin' onClick={handleOpen}>Thêm mới vị trí</Button>
                 <div className="search-user">
                     <TextField inputRef={refSearch} id="outlined-basic" label="Tìm theo tên" variant="outlined" className='input-search' />
-                    <button onClick={() => { 
-                        const keyword = (refSearch.current as unknown) as HTMLInputElement
-                        setSearchKey(keyword.value)
+                    <button onClick={() => {
+                        const keyword = refSearch.current?.value ?? ""
+                        setSearchKey(keyword)
                     }}>Tìm</button>
-
                 </div>
                 <Modal
                     open={open}
@@ -150,15 +152,15 @@ function ManageLocation() {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <AddNewLocation handleClose={handleClose} pageIndex={page}/>
+                    <AddNewLocation handleClose={handleClose} pageIndex={page} />
                 </Modal>
                 <Modal
                     open={show}
-                    onClose={()=>{setShow(false)}}
+                    onClose={() => { setShow(false) }}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <UpdateLocation handleClose={()=>{setShow(false)}} id={paramsId} pageIndex={page} data={paramsData}/>
+                    <UpdateLocation handleClose={() => { setShow(false) }} id={paramsId} pageIndex={page} data={paramsData} />
                 </Modal>
                 <DataGrid
                     className='mui-grid-user'
@@ -169,7 +171,7 @@ function ManageLocation() {
                     hideFooter={true}
                     sx={{ fontSize: '1.4rem', height: 475 }}
                 />
-                <Pagination onChange={handleChangePagination} count={Math.ceil(dataRetrieve.totalRow/dataRetrieve.pageSize)} variant="outlined" sx={{ marginTop: '1rem', marginRight: '5%', justifyContent: 'flex-end', display: 'flex' }} />
+                <Pagination onChange={handleChangePagination} count={Math.ceil(dataRetrieve?.totalRow / dataRetrieve?.pageSize)} variant="outlined" sx={{ marginTop: '1rem', marginRight: '5%', justifyContent: 'flex-end', display: 'flex' }} />
             </Container>
         </div>
     )

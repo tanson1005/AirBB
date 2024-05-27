@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export default function PersonModal({ personData, closeModal, openUpdate }: IProps) {
-    const [image, setImage] = useState<string>(personData.avatar || 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=1380&t=st=1688393572~exp=1688394172~hmac=815045c69ac370508646eb2d6d759a7ae12ca10a4f3e0ea6083c11c42c2617e7');
+    const [image, setImage] = useState<string>(personData?.avatar || '../../assets/Image/avatar-icon-images.jpg');
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -34,21 +34,21 @@ export default function PersonModal({ personData, closeModal, openUpdate }: IPro
                 <CardMedia
                     sx={{ height: 300 }}
                     image={image}
-                    title={`Avatar của ${personData.name}`}
+                    title={`Avatar của ${personData?.name}`}
                 />
                 <CardContent className='mui-card-content'>
                     <Typography gutterBottom variant="h2" component="div">
-                        {personData.name}
+                        {personData?.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" className='mui-typography-card'>
                         <h4>Thông tin cá nhân:</h4>
                         <ul>
-                            <li>Ngày sinh: <span>{personData.birthday}</span> </li>
-                            <li>Email: <span>{personData.email}</span> </li>
-                            <li>Giới tính: <span>{personData.gender ? 'Nam' : 'Nữ'}</span></li>
-                            <li>Số điện thoại: <span>{personData.phone}</span></li>
-                            <li>Mật khẩu: <span>{personData.password}</span></li>
-                            <li>Quyền: <span>{personData.role}</span></li>
+                            <li>Ngày sinh: <span>{personData?.birthday}</span> </li>
+                            <li>Email: <span>{personData?.email}</span> </li>
+                            <li>Giới tính: <span>{personData?.gender ? 'Nam' : 'Nữ'}</span></li>
+                            <li>Số điện thoại: <span>{personData?.phone}</span></li>
+                            <li>Mật khẩu: <span>{personData?.password}</span></li>
+                            <li>Quyền: <span>{personData?.role}</span></li>
                         </ul>
                     </Typography>
                 </CardContent>

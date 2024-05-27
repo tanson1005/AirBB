@@ -43,15 +43,15 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
 
     const formik = useFormik({
         initialValues: {
-            name: `${personData.name}`,
-            email: `${personData.email}`,
-            phone: `${personData.phone}`,
-            birthday: `${personData.birthday}`,
-            role: `${personData.role}`,
-            gender: personData.gender,
+            name: `${personData?.name}`,
+            email: `${personData?.email}`,
+            phone: `${personData?.phone}`,
+            birthday: `${personData?.birthday}`,
+            role: `${personData?.role}`,
+            gender: personData?.gender,
         },
         validationSchema: Yup.object().shape({
-            role: Yup.string().required('Role can not be empty').notOneOf(["admin", "user"], "Please capitalise the role").oneOf(["ADMIN", "USER","SUPERADMIN"], "Invalid Role"),
+            role: Yup.string().required('Role can not be empty').notOneOf(["admin", "user"], "Please capitalise the role").oneOf(["ADMIN", "USER", "SUPERADMIN"], "Invalid Role"),
             name: Yup.string().matches(regex.nameByVietnamese, 'Name has to be valid').required('Name can not be empty'),
             phone: Yup.number().required('Phone can not be empty')
         }),
@@ -62,16 +62,15 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
 
                 const newValue = {
                     ...values,
-                    birthday: (dateValue?.date() !== undefined ? date : personData.birthday),
-                    gender: (getGender ? getGender : personData.gender),
+                    birthday: (dateValue?.date() !== undefined ? date : personData?.birthday),
+                    gender: (getGender ? getGender : personData?.gender),
                 }
                 console.log(newValue)
-                await axiosInterceptorWithCybertoken.put(`/api/users/${personData.id}`, newValue)
-                dispatch(updateUserList({ ...newValue, id: personData.id }))
+                await axiosInterceptorWithCybertoken.put(`/api/users/${personData?.id}`, newValue)
+                dispatch(updateUserList({ ...newValue, id: personData?.id }))
                 swal("Thành công, tài khoản đã được update!", {
                     icon: "success",
                 });
-
 
             } catch (error) {
                 swal("Thất bại, vui lòng kiểm tra lại thông tin!", {
@@ -81,8 +80,6 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
 
         }
     })
-
-
 
     return (
         <div className='person-update-modal'>
@@ -99,8 +96,7 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
                     <Grid item lg={6} className='mui-item-grid-admin'>
                         <FormControl variant='standard' className='mui-form-control-admin' margin='dense'>
                             <InputLabel htmlFor="email">Email</InputLabel>
-                            <Input id="email" aria-describedby="my-helper-text" disabled={true} value={personData.email} />
-
+                            <Input id="email" aria-describedby="my-helper-text" disabled={true} value={personData?.email} />
                         </FormControl>
                     </Grid>
                     <Grid item lg={6} className='mui-item-grid-admin'>
@@ -108,7 +104,6 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
                             <InputLabel htmlFor="phone">Số điện thoại</InputLabel>
                             <Input id="phone" aria-describedby="my-helper-text" {...formik.getFieldProps('phone')} />
                             {formik.touched.phone && formik.errors.phone ? <FormHelperText id="my-helper-text">{formik.errors.phone}</FormHelperText> : <></>}
-
                         </FormControl>
                     </Grid>
                     <Grid item lg={6} className='mui-item-grid-admin'>
@@ -116,7 +111,6 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
                             <InputLabel htmlFor="role">Quyền</InputLabel>
                             <Input id="role" aria-describedby="my-helper-text" {...formik.getFieldProps('role')} />
                             {formik.touched.role && formik.errors.role ? <FormHelperText id="my-helper-text">{formik.errors.role}</FormHelperText> : <></>}
-
                         </FormControl>
                     </Grid>
                     <Grid item lg={6} className='mui-item-grid-admin'>
@@ -157,3 +151,4 @@ function PersonUpdateModal({ handleCloseModal, personData }: IProps) {
 }
 
 export default PersonUpdateModal
+    

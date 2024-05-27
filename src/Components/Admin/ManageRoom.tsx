@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState } from 'react';
 //css
-import './manage.scss'
+import './manage.scss';
 //mui ui
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
@@ -21,115 +21,106 @@ import { getRoomByPhanTrang } from '../../redux/Admin-slice/AdminRoomSlice';
 import swal from 'sweetalert';
 import { axiosInterceptor } from '../../services/services';
 
+const RoomActions = ({ params, page, searchKey }: { params: GridRenderCellParams, page: number, searchKey: string }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const [show, setShow] = useState<boolean>(false);
+    const [showUpdate, setShowUpdate] = useState<boolean>(false);
+
+    const handleShow = () => setShow(true);
+    const handleShowOff = () => setShow(false);
+
+    const onClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShow();
+    };
+
+    const onClick2 = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setShowUpdate(true);
+    };
+
+    const onClick3 = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            swal({
+                title: "Bạn có chắc chắn muốn xóa phòng này?",
+                text: "Không thể quay lại sau khi xóa",
+                icon: "warning",
+                buttons: ['Không xóa', 'Xóa!'],
+                dangerMode: true,
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: 'Xóa thành công!',
+                        text: `Tên phòng với id ${params.row.id} đã bị xóa`,
+                        icon: 'success'
+                    }).then(async () => {
+                        await axiosInterceptor.delete(`/api/phong-thue/${params.row.id}`);
+                        dispatch(getRoomByPhanTrang({ pageIndex: page, keywords: searchKey ? searchKey : "" }));
+                    });
+                } else {
+                    swal("Hủy thành công", `Tên phòng với id ${params.row.id} chưa bị xóa`, "error");
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            swal("Thất bại, bạn không có quyền để xóa phòng này", {
+                icon: "error",
+            });
+        }
+    };
+
+    return (
+        <div className="button-group">
+            <Button variant="contained" onClick={onClick}>Xem chi tiết</Button>
+            <Button variant="contained" onClick={onClick2} color='info'>Sửa</Button>
+            <Button variant="contained" onClick={onClick3} color='error'>Xóa</Button>
+            <Modal
+                open={show}
+                onClose={handleShowOff}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <DetailRoom handleCloseModal={handleShowOff} data={params.row} handleUpdate={() => { setShowUpdate(true); }} />
+            </Modal>
+            <Modal
+                open={showUpdate}
+                onClose={() => { setShowUpdate(false); }}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <RoomUpdateModal pageIndex={page} roomdata={params.row} handleCloseUpdate={() => { setShowUpdate(false); }} />
+            </Modal>
+        </div>
+    );
+};
 
 function ManageRoom() {
-    const dispatch  = useDispatch<AppDispatch>()
-    const [open, setOpen] = React.useState(false);
-    const [page, setPage] = React.useState(1)
-    const [searchKey, setSearchKey] = React.useState("")
-    const refSearch = React.useRef<HTMLInputElement>();
+    const dispatch = useDispatch<AppDispatch>();
+    const [open, setOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [searchKey, setSearchKey] = useState("");
+    const refSearch = React.useRef<HTMLInputElement>(null);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'Mã phòng', width: 90, align: 'center' },
-        { field: 'tenPhong', headerName: 'Tên phòng', width: 300, headerAlign:'center' },
+        { field: 'tenPhong', headerName: 'Tên phòng', width: 300, headerAlign: 'center' },
         {
             field: 'hinhAnh', headerName: 'Hình ảnh', width: 130, renderCell: (params) => {
-                return <Avatar alt="Remy Sharp" src={params.row.hinhAnh} />
-            }, align: 'center' , headerAlign:'center'
+                return <Avatar alt="Remy Sharp" src={params.row.hinhAnh} />;
+            }, align: 'center', headerAlign: 'center'
         },
         {
-            field: 'maViTri',
-            headerName: 'Mã địa điểm',
-            width: 100,
-            align: 'center'
+            field: 'maViTri', headerName: 'Mã địa điểm', width: 100, align: 'center'
         },
         {
-            field: 'khach',
-            headerName: 'Tối đa khách',
-            type: 'number',
-            width: 100,
-            align: 'center'
+            field: 'khach', headerName: 'Tối đa khách', type: 'number', width: 100, align: 'center'
         },
         {
-            field: "action",
-            headerName: "Action",
-            headerAlign:'center',
-            align:'center',
-            width: 300,
-            sortable: false,
-            renderCell: (params) => {
-                const [show, setShow] = useState<boolean>(false)
-                const [showUpdate,setShowUpdate] = useState<boolean>(false)
-                const handleShow = () => setShow(true);
-                const handleShowOff = () => setShow(false)
-                const onClick = (e: React.MouseEvent) => {
-                    e.stopPropagation()
-                    handleShow()
-                };
-                const onClick2 = (e: React.MouseEvent) => {
-                    e.stopPropagation()
-                    setShowUpdate(true)
-                };
-                const onClick3 = (e: React.MouseEvent) => {
-                    e.stopPropagation()
-                    try{ 
-                        swal({
-                          title: "Bạn có chắc chắn muốn xóa phòng này?",
-                          text: "Không thể quay lại sau khi xóa",
-                          icon: "warning",
-                          buttons: [
-                            'Không xóa',
-                            'Xóa!'
-                          ],
-                          dangerMode: true,
-                        }).then(function(isConfirm) {
-                          if (isConfirm) {
-                            swal({
-                              title: 'Xóa thành công!',
-                              text: `Tên phòng với id ${params.row.id} đã bị xóa`,
-                              icon: 'success'
-                            }).then(async() => {
-                                await axiosInterceptor.delete(`/api/phong-thue/${params.row.id}`);
-                                dispatch(getRoomByPhanTrang({pageIndex: page, keywords: searchKey ? searchKey: ""}))
-                            });
-                          } else {
-                            swal("Hủy thành công",  `Tên phòng với id ${params.row.id} chưa bị xóa`, "error");
-                          }
-                        })
-                        
-                      } catch(error) { 
-                        console.log(error)
-                        swal("Thất bại, bạn không có quyền để xóa phòng này", {
-                          icon: "error",
-                        });
-                      }
-                };
-                return (
-                    <div className="button-group">
-                        <Button variant="contained" onClick={onClick}>Xem chi tiết</Button>
-                        <Button variant="contained" onClick={onClick2} color='info'>Sửa</Button>
-                        <Button variant="contained" onClick={onClick3} color='error'>Xóa</Button>
-                        <Modal
-                            open={show}
-                            onClose={handleShowOff}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                        >
-                            <DetailRoom handleCloseModal={handleShowOff} data={params.row} handleUpdate={()=>{setShowUpdate(true)}} />
-                        </Modal>
-                        <Modal
-                            open={showUpdate}
-                            onClose={()=>{setShowUpdate(false)}}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                        >
-                            <RoomUpdateModal pageIndex={page} roomdata={params.row} handleCloseUpdate={()=>{setShowUpdate(false)}}/>
-                        </Modal>
-                    </div>
-                );
-            }
+            field: "action", headerName: "Action", headerAlign: 'center', align: 'center', width: 300, sortable: false,
+            renderCell: (params) => <RoomActions params={params} page={page} searchKey={searchKey} />
         }
     ];
 
@@ -157,26 +148,26 @@ function ManageRoom() {
         },
     ];
 
-    const dataRetrieve = useSelector((state: RootState)=>state.sliceRoomAdmin.currentRoombyPhanTrang)
-    const newRows = dataRetrieve.data ? dataRetrieve.data : rows 
+    const dataRetrieve = useSelector((state: RootState) => state.sliceRoomAdmin.currentRoombyPhanTrang);
+    const newRows = dataRetrieve?.data ?? rows;
 
-    React.useEffect(() => { 
-        dispatch(getRoomByPhanTrang({pageIndex: page, keywords: searchKey}))
-      }, [page, searchKey])
+    React.useEffect(() => {
+        dispatch(getRoomByPhanTrang({ pageIndex: page, keywords: searchKey }));
+    }, [page, searchKey]);
 
     const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => {
-        setPage(page)
-        return e.target
-    }
+        setPage(page);
+    };
+
     return (
         <div className='manage-user'>
             <Container fixed={true} className='mui-container-manage'>
                 <Button className='button-add-admin' onClick={handleOpen}>Thêm phòng +</Button>
                 <div className="search-user">
                     <TextField inputRef={refSearch} id="outlined-basic" label="Tìm tài khoản qua tên" variant="outlined" className='input-search' />
-                    <button onClick={() => { 
-                        const keyword = (refSearch.current as unknown) as HTMLInputElement
-                        setSearchKey(keyword.value)
+                    <button onClick={() => {
+                        const keyword = refSearch.current?.value ?? "";
+                        setSearchKey(keyword);
                     }}>Tìm</button>
                 </div>
                 <Modal
@@ -192,15 +183,14 @@ function ManageRoom() {
                     rows={newRows}
                     columns={columns}
                     checkboxSelection
-                    hideFooterPagination={true}
-                    hideFooter={true}
+                    hideFooterPagination
+                    hideFooter
                     sx={{ fontSize: '1.4rem' }}
-
                 />
-                <Pagination onChange={handleChangePagination} count={Math.ceil(dataRetrieve.totalRow/dataRetrieve.pageSize)} variant="outlined" sx={{ marginTop: '1rem', marginRight: '5%', justifyContent: 'flex-end', display: 'flex' }} />
+                <Pagination onChange={handleChangePagination} count={Math.ceil(dataRetrieve?.totalRow / dataRetrieve?.pageSize)} variant="outlined" sx={{ marginTop: '1rem', marginRight: '5%', justifyContent: 'flex-end', display: 'flex' }} />
             </Container>
         </div>
-    )
+    );
 }
 
-export default ManageRoom
+export default ManageRoom;

@@ -1,4 +1,4 @@
-    export const CYBER_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCBETjEwIiwiSGV0SGFuU3RyaW5nIjoiMjIvMDgvMjAyNCIsIkhldEhhblRpbWUiOiIxNzI0Mjg0ODAwMDAwIiwibmJmIjoxNjkzMTU1NjAwLCJleHAiOjE3MjQ0MzI0MDB9.JjDqstSevsNiLhXlkGx2wJPz6otbfBWxfaCHMzBpb6s'
+    export const CYBER_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCBETjEwIiwiSGV0SGFuU3RyaW5nIjoiMjYvMDkvMjAyNCIsIkhldEhhblRpbWUiOiIxNzI3MzA4ODAwMDAwIiwibmJmIjoxNjkzMTU1NjAwLCJleHAiOjE3Mjc0NTY0MDB9.KhgtoXj99P5kUEohSpKZFpcVImS5NJmX96i_YSWck_w'
     export const ACCESS_TOKEN = 'accessToken'
     export const BASE_URL = 'https://airbnbnew.cybersoft.edu.vn'
     export const ACCESS_USER_ID = 'accessUserById'

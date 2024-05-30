@@ -9,11 +9,11 @@ type TProps = {
 
 const ButtonHeader: React.FC<TProps> = ({ children }: TProps) => {
   const [modal1Open, setModal1Open] = useState(false);
+
   return (
     <>
       <Button
-        className="button-header" // Add the class name to apply SCSS styles
-        type="default"
+        className="button-header"
         onClick={() => setModal1Open(true)}
       >
         {children}
@@ -28,8 +28,8 @@ const ButtonHeader: React.FC<TProps> = ({ children }: TProps) => {
         footer={null}
       >
         <div className="modal-content-header">
-          <NavLink to={'/auth/login'}>Đăng nhập</NavLink>
-          <NavLink to={'/auth/register'}>Đăng ký</NavLink>
+          <NavLink to='/auth/login'>Đăng nhập</NavLink>
+          <NavLink to='/auth/register'>Đăng ký</NavLink>
         </div>
         <div className="modal-content-footer">
           <a href="#" className="help-btn">Trợ Giúp</a>

@@ -3,13 +3,13 @@ import { IComment } from '../../constant/constant';
 import { checkIfImageExists } from '../Detail/commentComponent';
 import './cardslider.scss';
 
-interface IProps { 
+interface IProps {
     comment: IComment[];
     sliceMax: number;
     limit: boolean;
 }
 
-export function CardSlider({ comment, sliceMax, limit }: IProps) { 
+export function CardSlider({ comment, sliceMax, limit }: IProps) {
     useEffect(() => {
         const items = document.querySelectorAll('.calslider .calitem') as NodeListOf<HTMLElement>;
         const next = document.getElementById('next');

@@ -128,12 +128,12 @@ function ManageLocation() {
     const newRows = dataRetrieve?.data ?? rows
 
     React.useEffect(() => {
-        dispatch(getLocationByPhanTrang({ pageIndex: page, keywords: searchKey }))
-    }, [page, searchKey])
-
-    const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => {
-        setPage(page)
-    }
+        dispatch(getLocationByPhanTrang({ pageIndex: page, keywords: searchKey }));
+    }, [dispatch, page, searchKey]);
+    
+    const handleChangePagination = (_: React.ChangeEvent<unknown>, page: number) => {
+        setPage(page);
+    };
 
     return (
         <div className='manage-location'>

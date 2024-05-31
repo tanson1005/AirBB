@@ -153,12 +153,12 @@ function ManageRoom() {
 
     React.useEffect(() => {
         dispatch(getRoomByPhanTrang({ pageIndex: page, keywords: searchKey }));
-    }, [page, searchKey]);
-
-    const handleChangePagination = (e: React.ChangeEvent<unknown>, page: number) => {
+    }, [dispatch, page, searchKey]);
+    
+    const handleChangePagination = (_: React.ChangeEvent<unknown>, page: number) => {
         setPage(page);
     };
-
+    
     return (
         <div className='manage-user'>
             <Container fixed={true} className='mui-container-manage'>

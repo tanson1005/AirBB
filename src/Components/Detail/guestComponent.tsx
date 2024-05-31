@@ -41,7 +41,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
   const [phoneDate, setPhoneDate] = React.useState<DateRange[]>([]);
-  const idRoom = useParams();
+  const idRoom = (useParams<{ idDetail: string }>()?.idDetail) ?? '';
   const navigate = useNavigate();
   const [inputGuest, setInputGuest] = React.useState("1 guest");
   const [guest, setGuest] = React.useState(1);
@@ -54,12 +54,23 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     dispatch(getListBookedRoom());
   }, []);
 
-  const availableCount = useCheckAvailableCount(idRoom.idDetail, dateStart, dateEnd);
+  const availableCount = useCheckAvailableCount(idRoom || '', dateStart, dateEnd);
 
   React.useEffect(() => {
     setDateDifferent(Math.ceil(Math.abs(Date.parse(dateEnd) - Date.parse(dateStart)) / (1000 * 60 * 60 * 24)));
     setInputFilled(dateDifferent !== 0 && dateEnd !== "" && dateStart !== "" && guest !== 0);
   }, [dateEnd, dateStart, dateDifferent, guest]);
+
+  // Restore saved data when component mounts
+  React.useEffect(() => {
+    const savedData = localStorage.getItem('savedData');
+    if (savedData) {
+      const { dateStart, dateEnd, guest } = JSON.parse(savedData);
+      setDateStart(dateStart);
+      setDateEnd(dateEnd);
+      setGuest(guest);
+    }
+  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
     setInputGuest(event.target.value);
@@ -121,6 +132,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     if (dates && dates.length) {
       setDateStart(dates[0].$d);
       setDateEnd(dates[1].$d);
+      localStorage.setItem('savedData', JSON.stringify({ ...JSON.parse(localStorage.getItem('savedData')), dateStart: dates[0].$d, dateEnd: dates[1].$d }));
     }
   }
 
@@ -170,7 +182,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     <div className='my-3'>
       <RangePicker
         className='detail-range-picker'
-        onChange={handleDate}
+        onChange        ={handleDate}
         format={dateFormat}
         disabledDate={disabledDate}
       />
@@ -327,69 +339,23 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
                   <div className={`form-check ${!checkPayment ? "active" : ""}`}>
                     <label className="form-check-label" htmlFor="flexRadioDefault1">
                       <h2>Pay in full</h2>
-                      <p>{inputFilled ? `Trả đầy đủ ${giaTien * dateDifferent} USD` : "Chưa thế tính giá tiền"}</p>
+                      <p>{inputFilled ? `Trả đầy đủ ${giaTien} USD now` : `Trả ${giaTien} USD`}</p>
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={!checkPayment} onChange={() => { setCheckPayment(false) }} />
+                      <span className="checkmark"></span>
                     </label>
-                    <div className='radio-button'>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked onChange={() => { setCheckPayment(false) }} />
-                    </div>
                   </div>
                   <div className={`form-check ${checkPayment ? "active" : ""}`}>
                     <label className="form-check-label" htmlFor="flexRadioDefault2">
-                      <h2>Pay part now, part later</h2>
-                      <p>{inputFilled ? `Trả ${giaTien * dateDifferent} USD theo thời gian mà bạn chọn` : "Chưa thế tính giá tiền"}</p>
+                      <h2>Just Reserve</h2>
+                      <p>{inputFilled ? `Đặt chỗ giữ ${giaTien * dateDifferent} USD ngay bây giờ` : `Đặt chỗ giữ ${giaTien} USD`}</p>
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={checkPayment} onChange={() => { setCheckPayment(true) }} />
+                      <span className="checkmark"></span>
                     </label>
-                    <div className='radio-button'>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={() => { setCheckPayment(true) }} />
-                    </div>
                   </div>
                 </div>
+                <button className='detail-submit-guest' type='button' onClick={() => { handleBooking(); setOpen(false) }}>{inputFilled ? "Confirm and pay" : "Request to book"}</button>
               </section>
-              <section className='booking-paying-price'>
-                <h1>Price Detail</h1>
-                {!inputFilled ?
-                  <p className='text-center'>
-                    Enter dates and number of guests to check the total trip price, including additional fees and any taxes.
-                  </p>
-                  :
-                  <div>
-                    <p className='text-center'>
-                      Bạn chưa bị tính tiền
-                    </p>
-                    <div className='detail-fees'>
-                      <p>
-                        ${giaTien} USD x {dateDifferent} nights
-                    </p>
-                      <p>
-                        {giaTien * dateDifferent} USD
-                    </p>
-                    </div>
-                    <hr />
-                    <div className='detail-fees-total'>
-                      <p>
-                        Total
-                    </p>
-                      <p>
-                        {giaTien * dateDifferent} USD
-                    </p>
-                    </div>
-                  </div>
-                }
-
-                <button className="detail-submit-guest" type='button' onClick={handleBooking}>
-                  {!inputFilled ? "Check availability" : "Thuê nhà"}
-                </button>
-              </section>
-
             </section>
-
-            <footer className='booking-footer'>
-              <div className='d-flex'>
-                <i className="fa fa-globe mr-2 mt-1"></i>
-                <h4>Engish  $ USD</h4>
-              </div>
-              <p className='mt-4'>© 2024 By Tấn Sơn</p>
-              <p>Privacy · Terms · Sitemap</p>
-            </footer>
           </div>
         </Box>
       </Modal>
@@ -398,5 +364,3 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 }
 
 export default SelectVariants;
-
-

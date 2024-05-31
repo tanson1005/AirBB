@@ -12,14 +12,16 @@ import { Profile } from '../../Components/Profile/Profile';
 
 function PersonalInformation() {
   const dispatch = useDispatch<AppDispatch>()
-  const tokenId: number = getLocal(ACCESS_USER_ID);
+  const tokenId: number | null = getLocal(ACCESS_USER_ID);
   useEffect(()=>{
-    dispatch(getProfileData(tokenId))
-    dispatch(getRoomByUserId(tokenId))
+    if (tokenId) {
+      dispatch(getProfileData(tokenId))
+      dispatch(getRoomByUserId(tokenId))
+    }
   },[tokenId])
 
-  const profileData = useSelector((state: RootState)=>state.sliceUser.profileData)
-  const bookRoomData = useSelector((state: RootState)=>state.sliceRoomDetail.currentBookRoom)
+  const profileData = useSelector((state: RootState)=>state?.sliceUser?.profileData)
+  const bookRoomData = useSelector((state: RootState)=>state?.sliceRoomDetail?.currentBookRoom)
   return (
     <div> 
       <Container maxWidth='lg'>

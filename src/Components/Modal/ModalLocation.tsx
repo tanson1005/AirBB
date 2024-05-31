@@ -4,12 +4,11 @@ import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import './modalLocation.scss'
-
-//interface redux
-import { ILocationItem } from '../../constant/constant'
-import { RootState } from "../../redux/store"
+import './modalLocation.scss';
+import { ILocationItem } from '../../constant/constant';
+import { RootState } from '../../redux/store';
 import useGetInspectOfSearchPage from '../Explore-location/exploreComponentLogic';
+import { filterLocations } from './modalLocationLogic';
 
 const style = {
     position: 'absolute',
@@ -22,28 +21,27 @@ const style = {
     boxShadow: 24,
     p: 3,
 };
+
 type TProps = {
-    children: JSX.Element,
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>
-}
+    children: JSX.Element;
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+};
 
 export default function BasicModal({ children, value, setValue }: TProps) {
     const [open, setOpen] = React.useState(false);
     const [list, setList] = React.useState<ILocationItem[]>([]);
-    const stateData = useSelector((state: RootState) => state.sliceLocation.inspectOfSearchPage)
-    const stateDataLocation = useGetInspectOfSearchPage()
-    const listData = (stateData.length > 0 ? [...stateData] : [...stateDataLocation])
+    const stateData = useSelector((state: RootState) => state.sliceLocation.inspectOfSearchPage);
+    const stateDataLocation = useGetInspectOfSearchPage();
+    const listData = (stateData?.length > 0 ? [...stateData] : [...stateDataLocation]) ?? [];
+    
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
-        const revertValueInput = e.target.value.toLowerCase().trim()
-        const findResultList = listData.filter((item: ILocationItem) => {
-            return (item.tinhThanh.toLowerCase().includes(revertValueInput))
-        })
-        setList(findResultList)
-    }
+        setValue(e.target.value);
+        const findResultList = filterLocations(listData, e.target.value);
+        setList(findResultList);
+    };
 
     return (
         <div className='modal-location'>
@@ -56,19 +54,17 @@ export default function BasicModal({ children, value, setValue }: TProps) {
             >
                 <Box sx={style} className='mui-box-location'>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Địa điểm khả dụng: <input type="text" value={value} onChange={(e) => { handleChange(e) }} />
+                        Địa điểm khả dụng: <input type="text" value={value} onChange={handleChange} />
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {list.map((item: ILocationItem, index) => {
-                            return (
-                                <NavLink key={`${index}${item.id}`} to={`/${item.id}`}>
+                        {list.map((item: ILocationItem, index) => (
+                            <NavLink key={`${index}${item.id}`} to={`/${item.id}`}>
                                 <div className="location-item">
                                     <i className='fa-solid fa-location-dot'></i>
-                                    <p>{`${item.tenViTri}, ${item.tinhThanh}`}</p>
+                                    <p>{`${item?.tenViTri}, ${item?.tinhThanh}`}</p>
                                 </div>
-                                </NavLink>
-                            )
-                        })}
+                            </NavLink>
+                        ))}
                     </Typography>
                 </Box>
             </Modal>

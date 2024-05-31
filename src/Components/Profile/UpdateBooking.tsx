@@ -7,15 +7,16 @@ import { IBookRoom } from '../../constant/constant';
 import * as Yup from 'yup';
 import { FormControl, FormHelperText, Grid, Input, InputLabel } from '@mui/material';
 import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // 
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { axiosInterceptorWithCybertoken } from '../../services/services';
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { getRoomByUserId } from '../../redux/Detail-slice/DetailSlice';
-import useCheckAvailableCount from '../Detail/handleCheckAvailable'
-import { getListBookedRoom } from '../../redux/Admin-slice/AdminBookingSlice'
+import useCheckAvailableCount from '../Detail/handleCheckAvailable';
+import { getListBookedRoom } from '../../redux/Admin-slice/AdminBookingSlice';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -27,20 +28,19 @@ const style = {
     p: 4,
 };
 
-
 interface IProps {
     bookRoom: IBookRoom | any,
     khachMax: number
 }
 
 export function UpdateBooking({ bookRoom, khachMax }: IProps) {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [dateStart, setDateStart] = React.useState("")
-    const [dateEnd, setDateEnd] = React.useState("")
-    const [isAvai,setAvai]= React.useState(false)
+    const [dateStart, setDateStart] = React.useState<Date | null>(null);
+    const [dateEnd, setDateEnd] = React.useState<Date | null>(null);
+    const [isAvai, setAvai] = React.useState(false);
     const [phoneDate, setPhoneDate] = React.useState<any>([
         {
             startDate: new Date(),
@@ -48,96 +48,77 @@ export function UpdateBooking({ bookRoom, khachMax }: IProps) {
             key: 'selection'
         }
     ]);
-    const [phoneError, setPhoneError] = React.useState("")
+    const [phoneError, setPhoneError] = React.useState("");
 
     React.useEffect(() => {
-        if ((phoneDate[0].endDate - phoneDate[0].startDate) === 0) {
-            setPhoneError("Ngày đến và ngày đi không được trùng nhau")
+        if (phoneDate[0].endDate && phoneDate[0]?.endDate - phoneDate[0]?.startDate === 0) {
+            setPhoneError("Ngày đến và ngày đi không được trùng nhau");
         } else {
-            setPhoneError("")
+            setPhoneError("");
         }
+    }, [phoneDate]);
 
-    }, [phoneDate])
-    React.useEffect(()=>{
-        dispatch(getListBookedRoom())
-        
-      },[])
-    const availableCount = useCheckAvailableCount(bookRoom.maPhong,dateStart, dateEnd, bookRoom.id)
+    React.useEffect(() => {
+        dispatch(getListBookedRoom());
+    }, [dispatch]);
+
+    const availableCount = useCheckAvailableCount(bookRoom?.maPhong, dateStart, dateEnd, bookRoom?.id);
+
     const formik = useFormik({
         initialValues: {
-            id: bookRoom.id,
-            maPhong: bookRoom.maPhong,
-            maNguoiDung: bookRoom.maNguoiDung,
-            ngayDen: bookRoom.ngayDen,
-            ngayDi: bookRoom.ngayDi,
-            soLuongKhach: bookRoom.soLuongKhach,
+            id: bookRoom?.id,
+            maPhong: bookRoom?.maPhong,
+            maNguoiDung: bookRoom?.maNguoiDung,
+            ngayDen: bookRoom?.ngayDen,
+            ngayDi: bookRoom?.ngayDi,
+            soLuongKhach: bookRoom?.soLuongKhach,
         },
         validationSchema: Yup.object().shape({
-            soLuongKhach: Yup.number().required('Số lượng khách can not be empty').min(1, "Số lượng khách phải lớn hơn 0").max(khachMax, `Số lượng khách lớn nhất mà bạn có thể đặt là ${khachMax}`)
+            soLuongKhach: Yup.number().required('Số lượng khách không được để trống').min(1, "Số lượng khách phải lớn hơn 0").max(khachMax, `Số lượng khách lớn nhất mà bạn có thể đặt là ${khachMax}`)
         }),
-
         onSubmit: async (values: IBookRoom | any) => {
             try {
+                let newValue = { ...values };
 
-                let newValue = {
-                    ...values
-                }
-
-                if (phoneDate[0].endDate !== null) {
-                    if(isAvai){
+                if (phoneDate[0]?.endDate !== null) {
+                    if (isAvai) {
                         newValue = {
                             ...values,
-                            ngayDen: phoneDate[0].startDate,
-                            ngayDi: phoneDate[0].endDate
-                        }
-                    }else{
-                        newValue = {
-                            undefined
-                        }
+                            ngayDen: phoneDate[0]?.startDate,
+                            ngayDi: phoneDate[0]?.endDate
+                        };
                     }
                 }
 
-
                 if (phoneError === "") {
-                    await axiosInterceptorWithCybertoken.put(`/api/dat-phong/${newValue.id}`, newValue)
-
-                    dispatch(getRoomByUserId(newValue.maNguoiDung))
-
-                    swal(`Thành công, Update thành công khách hàng`, {
-                        icon: "success",
-                    });
-                    handleClose()
+                    await axiosInterceptorWithCybertoken.put(`/api/dat-phong/${newValue?.id}`, newValue);
+                    dispatch(getRoomByUserId(newValue?.maNguoiDung));
+                    swal(`Thành công, Update thành công khách hàng`, { icon: "success" });
+                    handleClose();
                 }
 
             } catch (error) {
-                console.log(error)
-                swal("Thất bại sửa phòng", {
-                    icon: "error",
-                });
+                console.log(error);
+                swal("Thất bại sửa phòng", { icon: "error" });
             }
-
         }
-    })
-    const handleCheckAvailable = async ()=>{
-        setDateStart(phoneDate[0].startDate)
-        setDateEnd(phoneDate[0].endDate)
-        if(availableCount < 1){
-            setAvai(true)
-            swal(`Phòng có sẵn`, {
-                icon: "success",
-            });
-        }else{
-            setAvai(false)
-            swal(`Phòng không có sẵn, liên hệ với nhân viên qua cổng hỗ trợ để sửa thông tin`, {
-                icon: "warning",
-            });
+    });
+
+    const handleCheckAvailable = async () => {
+        setDateStart(phoneDate[0]?.startDate);
+        setDateEnd(phoneDate[0]?.endDate);
+        if (availableCount < 1) {
+            setAvai(true);
+            swal(`Phòng có sẵn`, { icon: "success" });
+        } else {
+            setAvai(false);
+            swal(`Phòng không có sẵn, liên hệ với nhân viên qua cổng hỗ trợ để sửa thông tin`, { icon: "warning" });
         }
     }
 
     return (
         <div>
             <Button onClick={handleOpen} sx={{ fontSize: "1.5rem", border: "solid 0.5px black", color: "green" }}>Sửa</Button>
-
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -150,29 +131,28 @@ export function UpdateBooking({ bookRoom, khachMax }: IProps) {
                         <Grid container spacing={2} className='mui-grid-admin '>
                             <Grid item lg={6} className='mui-item-grid-admin d-flex justify-content-center'>
                                 <div>
-                                    <h5>Ngày đến cũ: <span style={{ fontWeight: "400" }}>{bookRoom.ngayDen}</span></h5>
-                                    <h5>Ngày Đi cũ: <span style={{ fontWeight: "400" }}>{bookRoom.ngayDi}</span></h5>
+                                    <h5>Ngày đến cũ: <span style={{ fontWeight: "400" }}>{new Date(bookRoom?.ngayDen).toLocaleString()}</span></h5>
+                                    <h5>Ngày Đi cũ: <span style={{ fontWeight: "400" }}>{new Date(bookRoom?.ngayDi).toLocaleString()}</span></h5>
 
                                     <DateRange
                                         editableDateInputs={true}
                                         onChange={item => {
-                                            setPhoneDate([item.selection])
+                                            setPhoneDate([item.selection]);
                                         }}
                                         moveRangeOnFirstSelection={false}
                                         ranges={phoneDate}
                                     />
-                                    {phoneError !== "" ? <FormHelperText id="my-helper-text">{phoneError}</FormHelperText> : <></>}
+                                    {phoneError && <FormHelperText id="my-helper-text">{phoneError}</FormHelperText>}
                                 </div>
                             </Grid>
                             <Grid item lg={6} className='mui-item-grid-admin'>
-                                <FormControl variant='standard' className='mui-form-control' margin='dense' error={formik.errors.soLuongKhach ? true : false}>
+                                <FormControl variant='standard' className='mui-form-control' margin='dense' error={Boolean(formik.errors.soLuongKhach)}>
                                     <InputLabel htmlFor="my-input-phone" sx={{ fontSize: "1.5rem" }}>Số Lượng khách</InputLabel>
                                     <Input id="my-input-phone" aria-describedby="my-helper-text" {...formik.getFieldProps('soLuongKhach')} sx={{ fontSize: "1.5rem" }} />
-                                    {formik.touched.soLuongKhach && formik.errors.soLuongKhach ? <FormHelperText id="my-helper-text">{`${formik.errors.soLuongKhach}`}</FormHelperText> : <></>}
+                                    {formik.touched.soLuongKhach && formik.errors.soLuongKhach ? <FormHelperText id="my-helper-text">{String(formik.errors.soLuongKhach)}</FormHelperText> : null}
                                 </FormControl>
                             </Grid>
                         </Grid>
-
                         <div className="button-group-admin-register">
                             <Button variant="contained" onClick={handleCheckAvailable}>Kiểm tra lịch</Button>
                             <Button variant="contained" type='submit'>Sửa</Button>

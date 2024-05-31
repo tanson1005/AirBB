@@ -2,7 +2,6 @@ import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { ACCESS_USER_ID, IProfile, IValueUpdate } from '../../constant/constant';
 
-
 //react
 import { useState } from 'react';
 //Mui ui
@@ -21,14 +20,14 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 //const
-import { regex } from '../../constant/constant'
+import { regex } from '../../constant/constant';
 //swal
 import swal from 'sweetalert';
 //services
-import { axiosInterceptorWithCybertoken } from '../../services/services'
+import { axiosInterceptorWithCybertoken } from '../../services/services';
 import { getLocal } from '../../utils/utils';
 //css
-import './profile.scss'
+import './profile.scss';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { getProfileData } from '../../redux/user-slice/UserSlice';
@@ -45,67 +44,65 @@ const style = {
 };
 
 interface IProps {
-  profileData: IProfile
+  profileData?: IProfile; // Optional profileData
 }
 
 export default function UpdateProfile({ profileData }: IProps) {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const [dateValue, setDateValue] = useState<Dayjs | null>(null);
-  const [openModal, setOpenModal] = React.useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-
-  const [genderValue, setGender] = useState<boolean | string>(profileData?.gender);
+  const [genderValue, setGender] = useState<boolean | string>(profileData?.gender ?? '');
   const handleChange = (event: SelectChangeEvent<typeof genderValue>) => setGender(event.target.value);
-  const dateGenerate = `${dateValue?.date()}-${(dateValue?.month() || 0) + 1}-${dateValue?.year()}`
+  const dateGenerate = `${dateValue?.date()}-${(dateValue?.month() || 0) + 1}-${dateValue?.year()}`;
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const formik = useFormik({
     initialValues: {
-      name: profileData?.name,
-      email: profileData?.email,
-      phone: profileData?.phone,
-      birthday: profileData?.birthday,
-      role: profileData?.role,
-      gender: profileData?.gender,
+      name: profileData?.name ?? '',
+      email: profileData?.email ?? '',
+      phone: profileData?.phone ?? '',
+      birthday: profileData?.birthday ?? '',
+      role: profileData?.role ?? '',
+      gender: profileData?.gender ?? '',
     },
 
     validationSchema: Yup.object().shape({
-      name: Yup.string().matches(regex.nameByVietnamese, 'Name has to be valid').required('Name can not be empty'),
-      email: Yup.string().email('This field has to be email').required('Email can not be empty'),
-      phone: Yup.number().required('Phone can not be empty')
+      name: Yup.string().matches(regex.nameByVietnamese, 'Name has to be valid').required('Name cannot be empty'),
+      email: Yup.string().email('This field has to be email').required('Email cannot be empty'),
+      phone: Yup.number().required('Phone cannot be empty'),
     }),
     onSubmit: async (values: IValueUpdate) => {
       try {
-        const date = `${dateValue?.date()}-${(dateValue?.month() || 0) + 1}-${dateValue?.year()}`
-        const putBirthday = dateValue?.date() === undefined ? profileData.birthday : date
+        const date = `${dateValue?.date()}-${(dateValue?.month() || 0) + 1}-${dateValue?.year()}`;
+        const putBirthday = dateValue?.date() === undefined ? profileData?.birthday : date;
         const newValue = {
           ...values,
           birthday: putBirthday,
           role: 'USER',
           gender: genderValue,
-        }
-        const resp = await axiosInterceptorWithCybertoken.put(`/api/users/${getLocal(ACCESS_USER_ID)}`, newValue)
+        };
+        const resp = await axiosInterceptorWithCybertoken.put(`/api/users/${getLocal(ACCESS_USER_ID)}`, newValue);
         swal(`Thành công, Update thành công khách hàng ${resp.data.content.name}!`, {
-          icon: "success",
+          icon: 'success',
         });
-        dispatch(getProfileData(getLocal(ACCESS_USER_ID)))
-        handleCloseModal()
+        dispatch(getProfileData(getLocal(ACCESS_USER_ID)));
+        handleCloseModal();
       } catch (error) {
-        console.log(error)
-        swal("Thất bại, email đã được dùng!", {
-          icon: "error",
+        console.log(error);
+        swal('Thất bại, email đã được dùng!', {
+          icon: 'error',
         });
       }
-
-    }
-  })
+    },
+  });
 
   return (
     <div className='update-page'>
-      <Button sx={{fontSize: '14px'}} className="profile-text-highlight" onClick={handleOpenModal}>Chỉnh sửa hồ sơ</Button>
+      <Button sx={{ fontSize: '14px' }} className="profile-text-highlight" onClick={handleOpenModal}>Chỉnh sửa hồ sơ</Button>
       <Modal
         open={openModal}
         onClose={handleCloseModal}
@@ -120,19 +117,19 @@ export default function UpdateProfile({ profileData }: IProps) {
             <FormControl variant='standard' className='mui-form-control' margin='dense' error={formik.errors.name ? true : false}>
               <InputLabel htmlFor="my-input-name">Họ tên</InputLabel>
               <Input id="my-input-name" aria-describedby="my-helper-text" {...formik.getFieldProps('name')} />
-              {formik.touched.name && formik.errors.name ? <FormHelperText id="my-helper-text">{formik.errors.name}</FormHelperText> : <></>}
+              {formik.touched.name && formik.errors.name ? <FormHelperText id="my-helper-text">{formik.errors.name}</FormHelperText> : null}
             </FormControl>
             <FormControl variant='standard' className='mui-form-control' margin='dense' error={formik.errors.email ? true : false}>
               <InputLabel htmlFor="my-input-email">Email</InputLabel>
               <Input id="my-input-email" aria-describedby="my-helper-text" {...formik.getFieldProps('email')} disabled={true} />
-              {formik.touched.email && formik.errors.email ? <FormHelperText id="my-helper-text">{formik.errors.email}</FormHelperText> : <></>}
+              {formik.touched.email && formik.errors.email ? <FormHelperText id="my-helper-text">{formik.errors.email}</FormHelperText> : null}
             </FormControl>
             <FormControl variant='standard' className='mui-form-control' margin='dense' error={formik.errors.phone ? true : false}>
               <InputLabel htmlFor="my-input-phone">Số điện thoại</InputLabel>
               <Input id="my-input-phone" aria-describedby="my-helper-text" {...formik.getFieldProps('phone')} />
-              {formik.touched.phone && formik.errors.phone ? <FormHelperText id="my-helper-text">{formik.errors.phone}</FormHelperText> : <></>}
+              {formik.touched.phone && formik.errors.phone ? <FormHelperText id="my-helper-text">{formik.errors.phone}</FormHelperText> : null}
             </FormControl>
-              <TextField disabled={true} id="filled-basic" label="Your day of birth" variant="standard" value={dateValue?.date() === undefined ? formik.values.birthday : dateGenerate} className='birthday-show'/>
+            <TextField disabled={true} id="filled-basic" label="Your day of birth" variant="standard" value={dateValue?.date() === undefined ? formik.values.birthday : dateGenerate} className='birthday-show' />
             <Box sx={{ display: 'flex' }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker']}>
@@ -157,7 +154,6 @@ export default function UpdateProfile({ profileData }: IProps) {
                 </Select>
               </FormControl>
             </Box>
-
             <div className="form-button-group">
               <Button variant="outlined" className='register-navigate-button' onClick={() => { setOpenModal(false) }}>Close</Button>
               <Button variant="outlined" type='submit'>Update</Button>

@@ -119,8 +119,9 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 
   const handleDate = (dates: any) => {
     if (dates && dates.length) {
-      setDateStart(dates[0].$d);
-      setDateEnd(dates[1].$d);
+      const [startDate, endDate] = dates;
+      setDateStart(startDate ? startDate.format(dateFormat) : "");
+      setDateEnd(endDate ? endDate.format(dateFormat) : "");
     }
   }
 
@@ -196,7 +197,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
             </div>
           </div>
           <p className="guest-description">This place has a maximum of {khachMax} people</p>
-          <button className="guest-close mb-4" style={{ marginLeft: "80%" }}>Close</button>
+          <button className="guest-close mb-4" style={{ marginLeft: "80%" }} onClick={() => setOpen(false)}>Close</button>
         </Select>
       </FormControl>
       <button className="detail-submit-guest" type='button' onClick={handleBooking}>
@@ -250,8 +251,8 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
                 setPhoneDate([item.selection])
               }}
               moveRangeOnFirstSelection={false}
-              ranges={phoneDate.map(d => ({ startDate: d.startDate, endDate: d.endDate }))} // Modify this line
-              minDate={dayjs().toDate()} // Fix for selecting dates after the current date
+              ranges={phoneDate.map(d => ({ startDate: d.startDate, endDate: d.endDate }))}
+              minDate={dayjs().toDate()}
             />
           </div>
           <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>
@@ -397,5 +398,3 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 }
 
 export default SelectVariants;
-
-

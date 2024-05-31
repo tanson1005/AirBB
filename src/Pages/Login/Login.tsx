@@ -1,8 +1,8 @@
-import { useState} from 'react';
-import './login.scss'; // Import CSS file for styling
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon for using icons
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import icons for password visibility toggle
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import Facebook icon
+import { useState } from 'react';
+import './login.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -32,8 +32,8 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       try {
         const resp = await axiosInterceptorWithCybertoken.post('/api/auth/signin', values);
-        setLocal(ACCESS_TOKEN, resp.data.content.token);
-        setLocal(ACCESS_USER_ID, resp.data.content.user.id);
+        setLocal(ACCESS_TOKEN, resp?.data?.content?.token);
+        setLocal(ACCESS_USER_ID, resp?.data?.content?.user?.id);
         swal("Đã đăng nhập thành công!", { icon: "success" });
         navigate('/');
       } catch (error) {
@@ -47,23 +47,27 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
+  const renderFormHelperText = (touched, error) => {
+    return touched && error ? <FormHelperText id="my-helper-text">{error}</FormHelperText> : null;
+  };
+
   return (
     <div className="login-form-container">
       <h1 className="login-header text-center mb-4">Login</h1>
       <form onSubmit={formik.handleSubmit}>
         {/* Email input */}
         <div className="mb-3">  
-        <label className="">Welcome to AriBB</label>
-          <FormControl variant='standard' className='mui-form-control' margin='dense' fullWidth error={formik.errors.email ? true : false}>
+          <label className="">Welcome to AriBB</label>
+          <FormControl variant='standard' className='mui-form-control' margin='dense' fullWidth error={!!formik.errors.email}>
             <InputLabel htmlFor="my-input-email">Email</InputLabel>
             <Input id="my-input-email" aria-describedby="my-helper-text" {...formik.getFieldProps('email')} />
-            {formik.touched.email && formik.errors.email ? <FormHelperText id="my-helper-text">{formik.errors.email}</FormHelperText> : <></>}
+            {renderFormHelperText(formik.touched.email, formik.errors.email)}
           </FormControl>
         </div>
         {/* Password input */}
         <div className="mb-3"> 
           <div className="password-input-container">
-            <FormControl variant='standard' className='mui-form-control' margin='dense' fullWidth error={formik.errors.password ? true : false}>
+            <FormControl variant='standard' className='mui-form-control' margin='dense' fullWidth error={!!formik.errors.password}>
               <InputLabel htmlFor="my-input-password">Mật khẩu</InputLabel>
               <Input
                 id="my-input-password"
@@ -71,7 +75,7 @@ const LoginForm = () => {
                 aria-describedby="my-helper-text"
                 {...formik.getFieldProps('password')}
               />
-              {formik.touched.password && formik.errors.password ? <FormHelperText id="my-helper-text">{formik.errors.password}</FormHelperText> : <></>}
+              {renderFormHelperText(formik.touched.password, formik.errors.password)}
             </FormControl>
             {/* Toggle password visibility button */}
             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="password-toggle-icon" onClick={togglePasswordVisibility} />
@@ -88,7 +92,7 @@ const LoginForm = () => {
 
       {/* Social login buttons */}
       <div className="social-login-container">
-        <button className="btn-face" onClick={() => window.location.href = 'https://www.facebook.com/'}>
+      <button className="btn-face" onClick={() => window.location.href = 'https://www.facebook.com/'}>
           <FontAwesomeIcon icon={faFacebookF} style={{ fontSize: '20px', marginRight: '10px', paddingBottom: '1px' }} />
           Facebook
         </button>
@@ -107,3 +111,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+

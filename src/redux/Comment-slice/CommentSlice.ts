@@ -14,7 +14,7 @@ export const getCommentByRoomId = createAsyncThunk(
     async (id: string | undefined)=>{
        try{
            const resp = await axiosInterceptorWithCybertoken.get(`/api/binh-luan/lay-binh-luan-theo-phong/${id}`)
-           return resp
+           return resp.data.content;
        }catch(error){
         console.log(error)
        }
@@ -26,7 +26,7 @@ export const getCommentList = createAsyncThunk(
     async ()=>{
         try{
             const resp = await axiosInterceptorWithCybertoken.get('/api/binh-luan')
-            return resp
+            return resp.data.content;
         }catch(error){
             console.log(error)
         }
@@ -50,10 +50,10 @@ export const commentSlice = createSlice({
     },
     extraReducers: (build)=>{
         build.addCase(getCommentByRoomId.fulfilled,(state,action)=>{
-            state.currentRoomComment = action.payload?.data.content
+            state.currentRoomComment = action.payload;
         })
         build.addCase(getCommentList.fulfilled, (state,action)=>{
-            state.listComment = action.payload?.data.content
+            state.listComment = action.payload;
         })
     }
 })

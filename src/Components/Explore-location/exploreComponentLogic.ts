@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getInspectOfSearchPage } from "../../Components/Location-slice/LocationSlice";
+import { getInspectOfSearchPage } from "../../redux/Location-slice/LocationSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 

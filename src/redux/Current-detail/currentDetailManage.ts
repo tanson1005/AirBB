@@ -17,7 +17,7 @@ export const getCurrentCustomerById = createAsyncThunk(
     async (id: number)=>{
         try{
             const resp = await axiosInterceptorWithCybertoken.get(`/api/users/${id}`);
-            return resp;
+            return resp.data.content
             
         }catch(error){
             console.log(error)
@@ -29,7 +29,7 @@ export const getCurrentBookedRoomById = createAsyncThunk(
     async (id: number)=>{
         try{
             const resp = await axiosInterceptorWithCybertoken(`/api/phong-thue/${id}`);
-            return resp;
+            return resp.data.content
         }catch(error){
             console.log(error)
         }

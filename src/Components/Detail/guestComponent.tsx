@@ -51,7 +51,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [inputFilled, setInputFilled] = React.useState(false);
   const [dateDifferent, setDateDifferent] = React.useState(0);
   const [phoneDate, setPhoneDate] = useState<{ startDate: Date | undefined; endDate: Date | undefined }[]>([]);
-
+  
   React.useEffect(() => {
     dispatch(getListBookedRoom());
   }, []);
@@ -134,7 +134,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const handleOpen = () => {
     setOpen(true);
     if (dateStart && dateEnd) {
-      setPhoneDate([{ startDate: new Date(dateStart), endDate: new Date(dateEnd) }]);
+      setPhoneDate([{ startDate: new Date(dateStart), endDate: new Date(dateEnd) } as { startDate: Date; endDate: Date }]);
     }
   };
 
@@ -257,7 +257,7 @@ const style: React.CSSProperties = {
               }}
               moveRangeOnFirstSelection={false}
               ranges={phoneDate.map(d => ({ startDate: d.startDate || new Date(), endDate: d.endDate || new Date() }))}
-              minDate={dayjs().toDate()} // Fix for selecting dates after the current date
+              minDate={dayjs().toDate()} 
             />
           </div>
           <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>

@@ -1,4 +1,3 @@
-// Import necessary components and hooks
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +21,6 @@ import Modal from '@mui/material/Modal';
 import { AppDispatch } from '../../redux/store'
 import { getListBookedRoom } from '../../redux/Admin-slice/AdminBookingSlice'
 import useCheckAvailableCount from './handleCheckAvailable';
-import { useState } from 'react'; // Import useState hook
 
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
@@ -42,6 +40,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
+  const [phoneDate, setPhoneDate] = React.useState<DateRange[]>([]);
   const idRoom = useParams();
   const navigate = useNavigate();
   const [inputGuest, setInputGuest] = React.useState("1 guest");
@@ -50,8 +49,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [dateEnd, setDateEnd] = React.useState("");
   const [inputFilled, setInputFilled] = React.useState(false);
   const [dateDifferent, setDateDifferent] = React.useState(0);
-  const [phoneDate, setPhoneDate] = useState<{ startDate: Date | undefined; endDate: Date | undefined }[]>([]);
-  
+
   React.useEffect(() => {
     dispatch(getListBookedRoom());
   }, []);
@@ -133,9 +131,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 
   const handleOpen = () => {
     setOpen(true);
-    if (dateStart && dateEnd) {
-      setPhoneDate([{ startDate: new Date(dateStart), endDate: new Date(dateEnd) } as { startDate: Date; endDate: Date }]);
-    }
   };
 
   const handleCloseDate = () => {
@@ -153,24 +148,23 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     border: '2px solid #000',
-    boxShadow: '24px', 
-    padding: 4, 
-};
+    boxShadow: '24px',
+    padding: 4,
+  };
 
-const style: React.CSSProperties = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  backgroundColor: 'background.paper', 
-  border: '2px solid #000',
-  boxShadow: '24px', 
-  padding: 4,
-};
-
+  const style: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    backgroundColor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: '24px',
+    padding : 4,
+    };
 
   return !phone ? (
     <div className='my-3'>
@@ -182,7 +176,7 @@ const style: React.CSSProperties = {
       />
 
       <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
-        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem",color: "black"      }}>{guest} Guest</InputLabel>
+        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Guest</InputLabel>
         <Select
           sx={{ backgroundColor: "white" }}
           labelId="demo-simple-select-filled-label"
@@ -253,10 +247,11 @@ const style: React.CSSProperties = {
             <DateRange
               editableDateInputs={true}
               onChange={item => {
-                setPhoneDate([item.selection])
+                // setPhoneDate([item.selection])
+                console.log(item)
               }}
               moveRangeOnFirstSelection={false}
-              ranges={phoneDate.map(d => ({ startDate: d.startDate || new Date(), endDate: d.endDate || new Date() }))}
+              ranges={phoneDate.map(d => ({ startDate: d.startDate, endDate: d.endDate }))}
               minDate={dayjs().toDate()} 
             />
           </div>
@@ -335,7 +330,7 @@ const style: React.CSSProperties = {
                       <p>{inputFilled ? `Trả đầy đủ ${giaTien * dateDifferent} USD` : "Chưa thế tính giá tiền"}</p>
                     </label>
                     <div className='radio-button'>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked onChange={() => { setCheckPayment(false)}} />
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked onChange={() => { setCheckPayment(false) }} />
                     </div>
                   </div>
                   <div className={`form-check ${checkPayment ? "active" : ""}`}>
@@ -403,3 +398,5 @@ const style: React.CSSProperties = {
 }
 
 export default SelectVariants;
+
+

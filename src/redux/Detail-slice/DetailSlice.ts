@@ -12,7 +12,7 @@ export const getRoomByUserId = createAsyncThunk(
     async (id: number | undefined) => {
         try {
             const resp = await axiosInterceptorWithCybertoken.get(`/api/dat-phong/lay-theo-nguoi-dung/${id}`)
-            return resp
+            return resp.data.content;
         } catch (error) {
             console.log(error)
         }
@@ -26,7 +26,7 @@ export const getRoomById = createAsyncThunk(
     async (id: string | undefined) => {
         try {
             const resp = await axiosInterceptorWithCybertoken.get(`/api/phong-thue/${id}`)
-            return resp
+            return resp.data.content;
         } catch (error) {
             console.log(error)
         }
@@ -66,10 +66,10 @@ export const roomSlice = createSlice({
     },
     extraReducers: (build) => {
         build.addCase(getRoomById.fulfilled, (state, action) => {
-            state.currentRoom = action.payload?.data.content
+            state.currentRoom = action.payload;
         })
         build.addCase(getRoomByUserId.fulfilled, (state, action) => {
-            state.currentBookRoom = action.payload?.data.content
+            state.currentBookRoom = action.payload;
         })
     }
 })

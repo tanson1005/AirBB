@@ -12,7 +12,7 @@ export const getLocationByPhanTrang = createAsyncThunk(
     async ({pageIndex, keywords}: {pageIndex: number | undefined, keywords: string | undefined})=>{
         try{
             const resp = await axiosInterceptorWithCybertoken.get(`/api/vi-tri/phan-trang-tim-kiem?pageIndex=${pageIndex}&pageSize=8${keywords === undefined ? "": `&keyword=${keywords}`}`)
-            return resp
+            return resp.data.content
         }catch(error){
             console.log(error)
         }

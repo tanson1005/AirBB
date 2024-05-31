@@ -10,7 +10,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import "./detail.scss"
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import { DateRange } from 'react-date-range';
+import { DateRange, RangeKeyDict } from 'react-date-range';
 import { getLocal } from '../../utils/utils';
 import { ACCESS_USER_ID, IRoomDetail } from '../../constant/constant';
 import { axiosInterceptorWithCybertoken } from '../../services/services';
@@ -40,8 +40,9 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
-  const [phoneDate, setPhoneDate] = React.useState<DateRange[]>([]);
-  const idRoom = (useParams<{ idDetail: string }>()?.idDetail) ?? '';
+  const [phoneDate] = React.useState<DateRange[]>([]);
+  const idRoomParam = useParams<{ idDetail?: string }>()?.idDetail;
+  const idRoom = typeof idRoomParam === 'string' ? idRoomParam : '';
   const navigate = useNavigate();
   const [inputGuest, setInputGuest] = React.useState("1 guest");
   const [guest, setGuest] = React.useState(1);
@@ -51,8 +52,13 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [dateDifferent, setDateDifferent] = React.useState(0);
   const [state, setState] = React.useState([
     {
+<<<<<<< HEAD
+      startDate: new Date(), 
+      endDate: new Date(),
+=======
       startDate: new Date(),
       endDate: null,
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
       key: 'selection'
     }
   ]);
@@ -95,7 +101,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
         if (availableCount < 1) {
           try {
             const value = {
-              maPhong: idRoom.idDetail,
+              maPhong: idRoom,
               ngayDen: dateStart,
               ngayDi: dateEnd,
               soLuongKhach: guest,
@@ -138,7 +144,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     if (dates && dates.length) {
       setDateStart(dates[0].$d);
       setDateEnd(dates[1].$d);
+<<<<<<< HEAD
+=======
       // localStorage.setItem('savedData', JSON.stringify({ ...JSON.parse(localStorage.getItem('savedData')), dateStart: dates[0].$d, dateEnd: dates[1].$d }));
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
       const dataNeedToParse = localStorage.getItem('savedData') as string;
       if(dataNeedToParse != null){
         const data = JSON.parse(dataNeedToParse);
@@ -188,7 +197,13 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     boxShadow: '24px',
     padding : 4,
     };
-
+  const handleSelectDate = (date: RangeKeyDict) => {
+    if(date && date.selection){
+      const start = date.selection?.startDate ? new Date(date.selection.startDate) :new Date()
+      const end = date.selection?.endDate ? new Date(date.selection.endDate) :new Date()
+      setState([{startDate:start, endDate:end, key:'selection'}])
+    }
+  }
   return !phone ? (
     <div className='my-3'>
       <RangePicker
@@ -267,6 +282,15 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       >
         <Box sx={{ ...styleGuest }}>
           <div className='d-flex justify-content-center mt-5'>
+<<<<<<< HEAD
+            <DateRange
+            editableDateInputs={true}
+            onChange={(item)=>{
+              console.log("item",item)
+              console.log("state",state)
+            //  setState([item.selection])
+            handleSelectDate(item)
+=======
             {/* <DateRange
               editableDateInputs={true}
               onChange={item => {
@@ -283,6 +307,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               console.log(item)
               console.log(phoneDate)
              setState([item.selection])
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
             }}
             moveRangeOnFirstSelection={false}
             ranges={state}

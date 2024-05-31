@@ -45,7 +45,7 @@ function Detail({ dataDetail, location, comment, commentIdList }: IProps) {
             {/* Heading */}
             <div className='detail-gimmick d-flex justify-content-between align-content-center'>
                 <div className='detail-sub-heading'>
-                    <i className="fa-solid fa-star"></i>
+                    <i className="fa fa-star" aria-hidden="true"></i>
                     <p className='rating'>{averageStar || "0"}</p>
                     <p>·</p>
                     <p className='onDetail'>({comment.length} đánh giá)</p>

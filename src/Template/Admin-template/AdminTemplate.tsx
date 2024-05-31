@@ -21,8 +21,8 @@ function AdminTemplate() {
   useScrollTop();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [state, setState] = useState({ left: false });
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [state, setState] = useState<{ [key: string]: boolean }>({ left: false });
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,14 +41,14 @@ function AdminTemplate() {
   };
 
   const toggleDrawer = (anchor: 'left', open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
+    if (event && 'type' in event && (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift'))) {
       return;
     }
-    setState({ ...state, [anchor]: open });
+    setState((prev) => ({ ...prev, [anchor]: open }));
   };
 
   const handleCloseSideBar = () => {
-    setState({ left: false });
+    setState((prev) => ({ ...prev, left: false }));
   };
 
   return (
@@ -143,7 +143,7 @@ function AdminTemplate() {
           color="secondary"
           startIcon={<i className="fa fa-backward" aria-hidden="true"></i>}
           onClick={() => navigate('/')}
-        >
+          >
           Về trang chủ
         </Button>
       </div>
@@ -153,3 +153,4 @@ function AdminTemplate() {
 }
 
 export default AdminTemplate;
+

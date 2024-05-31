@@ -28,21 +28,36 @@ function App() {
     <Suspense fallback={<div>Loading...</div>}>
       <Router>
         <Routes>
-          <Route path="/" element={<HomeTemplate />}>
+          <Route
+            path="/"
+            element={<HomeTemplate />}
+          >
             <Route path=":idLocation" element={<RoomList />} />
             <Route path="/" element={<HomePage />} />
           </Route>
-          <Route path="detail" element={<DetailTemplate />}>
+          <Route
+            path="detail"
+            element={<DetailTemplate />}
+          >
             <Route path="profile" element={<PersonalInformation />} />
           </Route>
-          <Route path="room" element={<RoomTemplate />}>
+          <Route
+            path="room"
+            element={<RoomTemplate />}
+          >
             <Route path=":idDetail" element={<Detail />} />
           </Route>
-          <Route path="auth" element={<RegisterTemplate />}>
+          <Route
+            path="auth"
+            element={<RegisterTemplate />}
+          >
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
-          <Route path="@@admin" element={<AdminTemplate />}>
+          <Route
+            path="@@admin"
+            element={<AdminTemplate />}
+          >
             <Route path="user" element={<ManageUser />} />
             <Route path="roomdetail" element={<ManageRoom />} />
             <Route path="booked" element={<ManageBookedRoom />} />

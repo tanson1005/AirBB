@@ -5,7 +5,10 @@ import { ACCESS_TOKEN, CYBER_TOKEN } from '../constant/constant';
 // Chuyển đổi AxiosHeaders thành đối tượng JavaScript thông thường
 const createConfigHeaders = () => {
   const headers: any = {};
-  headers.token = `${getLocal(ACCESS_TOKEN)}`;
+  const accessToken = getLocal(ACCESS_TOKEN);
+  if (accessToken) {
+    headers.token = accessToken;
+  }
   headers.tokenCybersoft = CYBER_TOKEN;
   return headers;
 };
@@ -17,8 +20,6 @@ axiosInterceptor.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
-
-
 
 axiosInterceptorWithCybertoken.interceptors.request.use((config) => {
   config.headers.tokenCybersoft = CYBER_TOKEN;

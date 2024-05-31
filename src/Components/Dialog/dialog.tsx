@@ -6,10 +6,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-interface IProps{
-    buttonName: string,
-    title: string,
-    description: string | any
+interface IProps {
+  buttonName: string,
+  title: string,
+  description: string | React.ReactNode
 }
 
 const style = {
@@ -26,15 +26,15 @@ const style = {
   p: 4,
 };
 
-export default function AlertDialogSlide({buttonName, title, description} : IProps) {
+export default function AlertDialogSlide({ buttonName, title, description }: IProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button sx={{color:"black", fontSize:"1.5rem", borderColor:"black", textTransform: "none"}} variant="outlined" onClick={handleOpen}>
-        {`${buttonName}`}
+      <Button sx={{ color: "black", fontSize: "1.5rem", borderColor: "black", textTransform: "none" }} variant="outlined" onClick={handleOpen}>
+        {buttonName}
       </Button>
 
       <Modal
@@ -42,23 +42,21 @@ export default function AlertDialogSlide({buttonName, title, description} : IPro
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        
       >
         <Box sx={style}>
-          
-            <Button sx={{color:"black", fontSize:"2rem"}} onClick={() => {setOpen(false)}}><i className="fa-solid fa-x"></i></Button>
-         
-          <DialogTitle sx={{color:"black", fontSize:"3rem", borderColor:"black"}}>{`${title}`}</DialogTitle>
-          <DialogContent sx={{width:"100%"}}>
-            <DialogContentText sx={{color:"black", fontSize:"1.5rem", width:"100%"}} id="alert-dialog-slide-description">
-              {typeof description === "string" ? `${description}`: description}
+          <Button sx={{ color: "black", fontSize: "2rem" }} onClick={handleClose}>
+            <i className="fa-solid fa-x"></i>
+          </Button>
+          <DialogTitle sx={{ color: "black", fontSize: "3rem", borderColor: "black" }}>
+            {title}
+          </DialogTitle>
+          <DialogContent sx={{ width: "100%" }}>
+            <DialogContentText sx={{ color: "black", fontSize: "1.5rem", width: "100%" }} id="alert-dialog-slide-description">
+              {typeof description === "string" ? description : description ?? ""}
             </DialogContentText>
           </DialogContent>
         </Box>
       </Modal>
-
     </div>
   );
 }
-
-

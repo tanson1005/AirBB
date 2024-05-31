@@ -129,7 +129,7 @@ const RegisterForm = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker value={dateValue} onChange={(newValue) => setDateValue(newValue)} />
             </LocalizationProvider>
-            <FormControl sx={{ m: 1, minWidth: 90 }}>
+            <FormControl sx={{ m: 1, minWidth : 90 }}>
               <InputLabel id='gender-label'>Gender</InputLabel>
               <Select
                 labelId='gender-label'

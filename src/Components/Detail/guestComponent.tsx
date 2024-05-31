@@ -49,7 +49,13 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [dateEnd, setDateEnd] = React.useState("");
   const [inputFilled, setInputFilled] = React.useState(false);
   const [dateDifferent, setDateDifferent] = React.useState(0);
-
+  const [state, setState] = React.useState([
+    {
+      startDate: new Date(),
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
   React.useEffect(() => {
     dispatch(getListBookedRoom());
   }, []);
@@ -132,7 +138,12 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     if (dates && dates.length) {
       setDateStart(dates[0].$d);
       setDateEnd(dates[1].$d);
-      localStorage.setItem('savedData', JSON.stringify({ ...JSON.parse(localStorage.getItem('savedData')), dateStart: dates[0].$d, dateEnd: dates[1].$d }));
+      // localStorage.setItem('savedData', JSON.stringify({ ...JSON.parse(localStorage.getItem('savedData')), dateStart: dates[0].$d, dateEnd: dates[1].$d }));
+      const dataNeedToParse = localStorage.getItem('savedData') as string;
+      if(dataNeedToParse != null){
+        const data = JSON.parse(dataNeedToParse);
+        localStorage.setItem('savedData', JSON.stringify({ ...data, dateStart: dates[0].$d, dateEnd: dates[1].$d }));
+      }
     }
   }
 
@@ -182,7 +193,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     <div className='my-3'>
       <RangePicker
         className='detail-range-picker'
-        onChange        ={handleDate}
+        onChange={handleDate}
         format={dateFormat}
         disabledDate={disabledDate}
       />
@@ -256,7 +267,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       >
         <Box sx={{ ...styleGuest }}>
           <div className='d-flex justify-content-center mt-5'>
-            <DateRange
+            {/* <DateRange
               editableDateInputs={true}
               onChange={item => {
                 // setPhoneDate([item.selection])
@@ -265,6 +276,16 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               moveRangeOnFirstSelection={false}
               ranges={phoneDate.map(d => ({ startDate: d.startDate, endDate: d.endDate }))}
               minDate={dayjs().toDate()} 
+            /> */}
+            <DateRange
+            editableDateInputs={true}
+            onChange={(item)=>{
+              console.log(item)
+              console.log(phoneDate)
+             setState([item.selection])
+            }}
+            moveRangeOnFirstSelection={false}
+            ranges={state}
             />
           </div>
           <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>

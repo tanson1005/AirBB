@@ -10,8 +10,8 @@ export const getListBookedRoom = createAsyncThunk(
     'adminSlice/getBookingByPhanTrang',
     async () => {
         try {
-            const resp = axiosInterceptorWithCybertoken.get('/api/dat-phong')
-            return resp
+            const resp = await axiosInterceptorWithCybertoken.get('/api/dat-phong')
+            return resp.data.content
         } catch (error) {
             console.log(error)
         }
@@ -30,7 +30,7 @@ export const adminBookingSlice = createSlice({
     },
     extraReducers: (build) => {
         build.addCase(getListBookedRoom.fulfilled, (state, action) => {
-            state.listBooking = action.payload?.data.content
+            state.listBooking = action.payload
         })
     }
 })

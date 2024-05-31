@@ -11,7 +11,7 @@ export const getInspectOfSearchPage = createAsyncThunk(
     async () => {
         try {
             const resp = await axiosInterceptorWithCybertoken.get('/api/vi-tri')
-            return resp;
+            return resp.data.content;
         } catch (error) {
             console.log(error)
         }
@@ -23,7 +23,7 @@ export const getListRoomByIdLocation = createAsyncThunk(
     async (id: string | undefined) => {
         try {
             const resp = await axiosInterceptorWithCybertoken.get(`/api/phong-thue/lay-phong-theo-vi-tri?maViTri=${id}`)
-            return resp
+            return resp.data.content
         } catch (error) {
             console.log(error)
         }
@@ -44,10 +44,10 @@ export const locationSlice = createSlice({
     },
     extraReducers: (build) => {
         build.addCase(getInspectOfSearchPage.fulfilled, (state, action) => {
-            state.inspectOfSearchPage = action.payload?.data.content;
+            state.inspectOfSearchPage = action.payload;
         })
         build.addCase(getListRoomByIdLocation.fulfilled, (state, action) => {
-            state.listRoomByIdLocation = action.payload?.data.content
+            state.listRoomByIdLocation = action.payload
         })
     }
 })

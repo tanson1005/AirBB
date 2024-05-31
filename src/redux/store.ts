@@ -21,6 +21,8 @@ export const store = configureStore({
     sliceLocationAdmin,
     sliceCurrent
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware(),
 })
 
 export type RootState = ReturnType<typeof store.getState>

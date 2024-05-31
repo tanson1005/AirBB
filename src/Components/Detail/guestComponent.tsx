@@ -51,7 +51,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [inputFilled, setInputFilled] = React.useState(false);
   const [dateDifferent, setDateDifferent] = React.useState(0);
   const [phoneDate, setPhoneDate] = useState<{ startDate: Date | undefined; endDate: Date | undefined }[]>([]);
-  
+
   React.useEffect(() => {
     dispatch(getListBookedRoom());
   }, []);
@@ -153,23 +153,23 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     border: '2px solid #000',
-    boxShadow: '24px', 
-    padding: 4, 
-};
+    boxShadow: '24px',
+    padding: 4,
+  };
 
-const style: React.CSSProperties = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  backgroundColor: 'background.paper', 
-  border: '2px solid #000',
-  boxShadow: '24px', 
-  padding: 4,
-};
+  const style: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    backgroundColor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: '24px',
+    padding: 4,
+  };
 
 
   return !phone ? (
@@ -182,7 +182,7 @@ const style: React.CSSProperties = {
       />
 
       <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
-        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem",color: "black"      }}>{guest} Guest</InputLabel>
+        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Guest</InputLabel>
         <Select
           sx={{ backgroundColor: "white" }}
           labelId="demo-simple-select-filled-label"
@@ -256,8 +256,12 @@ const style: React.CSSProperties = {
                 setPhoneDate([item.selection])
               }}
               moveRangeOnFirstSelection={false}
-              ranges={phoneDate.map(d => ({ startDate: d.startDate || new Date(), endDate: d.endDate || new Date() }))}
-              minDate={dayjs().toDate()} 
+              minDate={dayjs().toDate()}
+              ranges={phoneDate.length ? phoneDate : [{
+                startDate: new Date(),
+                endDate: new Date(),
+                key: 'selection',
+              }]}
             />
           </div>
           <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>
@@ -335,7 +339,7 @@ const style: React.CSSProperties = {
                       <p>{inputFilled ? `Trả đầy đủ ${giaTien * dateDifferent} USD` : "Chưa thế tính giá tiền"}</p>
                     </label>
                     <div className='radio-button'>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked onChange={() => { setCheckPayment(false)}} />
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked onChange={() => { setCheckPayment(false) }} />
                     </div>
                   </div>
                   <div className={`form-check ${checkPayment ? "active" : ""}`}>
@@ -363,19 +367,19 @@ const style: React.CSSProperties = {
                     <div className='detail-fees'>
                       <p>
                         ${giaTien} USD x {dateDifferent} nights
-                    </p>
+                      </p>
                       <p>
                         {giaTien * dateDifferent} USD
-                    </p>
+                      </p>
                     </div>
                     <hr />
                     <div className='detail-fees-total'>
                       <p>
                         Total
-                    </p>
+                      </p>
                       <p>
                         {giaTien * dateDifferent} USD
-                    </p>
+                      </p>
                     </div>
                   </div>
                 }

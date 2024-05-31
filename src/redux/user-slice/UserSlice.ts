@@ -23,8 +23,8 @@ export const getProfileData = createAsyncThunk(
     'userSlice/getProfileData',
     async (id: number) => {
         try {
-            const resp = await axiosInterceptorWithCybertoken.get(`/api/users/${id}`)
-            return resp;
+            const resp = await axiosInterceptorWithCybertoken.get(`/api/users/${id}`);
+            return resp.data.content;
         } catch (error) {
             console.log(error)
         }
@@ -52,7 +52,7 @@ export const userSlice = createSlice({
     },
     extraReducers: (build) => {
         build.addCase(getProfileData.fulfilled, (state, action) => {
-            state.profileData = action.payload?.data.content
+            state.profileData = action.payload
         })
     }
 })

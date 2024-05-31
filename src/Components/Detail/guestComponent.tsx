@@ -52,8 +52,13 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [dateDifferent, setDateDifferent] = React.useState(0);
   const [state, setState] = React.useState([
     {
+<<<<<<< HEAD
       startDate: new Date(), 
       endDate: new Date(),
+=======
+      startDate: new Date(),
+      endDate: null,
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
       key: 'selection'
     }
   ]);
@@ -139,6 +144,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     if (dates && dates.length) {
       setDateStart(dates[0].$d);
       setDateEnd(dates[1].$d);
+<<<<<<< HEAD
+=======
+      // localStorage.setItem('savedData', JSON.stringify({ ...JSON.parse(localStorage.getItem('savedData')), dateStart: dates[0].$d, dateEnd: dates[1].$d }));
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
       const dataNeedToParse = localStorage.getItem('savedData') as string;
       if(dataNeedToParse != null){
         const data = JSON.parse(dataNeedToParse);
@@ -273,6 +282,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       >
         <Box sx={{ ...styleGuest }}>
           <div className='d-flex justify-content-center mt-5'>
+<<<<<<< HEAD
             <DateRange
             editableDateInputs={true}
             onChange={(item)=>{
@@ -280,6 +290,24 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               console.log("state",state)
             //  setState([item.selection])
             handleSelectDate(item)
+=======
+            {/* <DateRange
+              editableDateInputs={true}
+              onChange={item => {
+                // setPhoneDate([item.selection])
+                console.log(item)
+              }}
+              moveRangeOnFirstSelection={false}
+              ranges={phoneDate.map(d => ({ startDate: d.startDate, endDate: d.endDate }))}
+              minDate={dayjs().toDate()} 
+            /> */}
+            <DateRange
+            editableDateInputs={true}
+            onChange={(item)=>{
+              console.log(item)
+              console.log(phoneDate)
+             setState([item.selection])
+>>>>>>> 7fc647250ca4a5589cc1b4d7742110825357b856
             }}
             moveRangeOnFirstSelection={false}
             ranges={state}

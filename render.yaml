@@ -1,0 +1,11 @@
+# Exported from Render on 2024-05-31T17:55:30Z
+services:
+- type: web
+  name: AirBB
+  runtime: node
+  repo: https://github.com/tanson1005/AirBB
+  plan: free
+  region: oregon
+  buildCommand: npm install; npm run build
+  startCommand: npm run start
+version: "1"

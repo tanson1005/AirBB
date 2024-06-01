@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 4000,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 4000,
   },
   resolve:{
     alias:{

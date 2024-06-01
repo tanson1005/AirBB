@@ -12,7 +12,7 @@ export const getLocationByPhanTrang = createAsyncThunk(
     async ({pageIndex, keywords}: {pageIndex: number | undefined, keywords: string | undefined})=>{
         try{
             const resp = await axiosInterceptorWithCybertoken.get(`/api/vi-tri/phan-trang-tim-kiem?pageIndex=${pageIndex}&pageSize=8${keywords === undefined ? "": `&keyword=${keywords}`}`)
-            return resp.data.content
+            return resp.data.content;
         }catch(error){
             console.log(error)
         }
@@ -31,7 +31,7 @@ export const adminLocationSlice = createSlice({
     },
     extraReducers: (build)=>{
         build.addCase(getLocationByPhanTrang.fulfilled,(state,action)=>{
-            state.currentLocationbyPhanTrang = action.payload?.data.content
+            state.currentLocationbyPhanTrang = action.payload;
         })   
     }
 })

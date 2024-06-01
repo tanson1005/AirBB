@@ -40,7 +40,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
-  const [phoneDate] = React.useState<DateRange[]>([]);
+  const [phoneDate, setPhoneDate] = React.useState<DateRange[]>([]);
   const idRoomParam = useParams<{ idDetail?: string }>()?.idDetail;
   const idRoom = typeof idRoomParam === 'string' ? idRoomParam : '';
   const navigate = useNavigate();
@@ -57,9 +57,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       key: 'selection'
     }
   ]);
+
   React.useEffect(() => {
     dispatch(getListBookedRoom());
-  }, []);
+  }, [dispatch]);
 
   const availableCount = useCheckAvailableCount(idRoom || '', dateStart, dateEnd);
 
@@ -68,7 +69,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     setInputFilled(dateDifferent !== 0 && dateEnd !== "" && dateStart !== "" && guest !== 0);
   }, [dateEnd, dateStart, dateDifferent, guest]);
 
-  // Restore saved data when component mounts
   React.useEffect(() => {
     const savedData = localStorage.getItem('savedData');
     if (savedData) {
@@ -76,6 +76,13 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       setDateStart(dateStart);
       setDateEnd(dateEnd);
       setGuest(guest);
+      setState([
+        {
+          startDate: new Date(dateStart),
+          endDate: new Date(dateEnd),
+          key: 'selection'
+        }
+      ]);
     }
   }, []);
 
@@ -135,20 +142,25 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     }
   }
 
-  const handleDate = (dates: any) => {
+  const handleDate = (dates: [dayjs.Dayjs, dayjs.Dayjs] | null) => {
     if (dates && dates.length) {
-      setDateStart(dates[0].$d);
-      setDateEnd(dates[1].$d);
-      const dataNeedToParse = localStorage.getItem('savedData') as string;
-      if(dataNeedToParse != null){
-        const data = JSON.parse(dataNeedToParse);
-        localStorage.setItem('savedData', JSON.stringify({ ...data, dateStart: dates[0].$d, dateEnd: dates[1].$d }));
-      }
+      const [start, end] = dates;
+      const formattedStart = start.format(dateFormat);
+      const formattedEnd = end.format(dateFormat);
+      setDateStart(formattedStart);
+      setDateEnd(formattedEnd);
+      localStorage.setItem('savedData', JSON.stringify({ dateStart: formattedStart, dateEnd: formattedEnd, guest }));
+      setState([
+        {
+          startDate: start.toDate(),
+          endDate: end.toDate(),
+          key: 'selection'
+        }
+      ]);
     }
   }
 
   const disabledDate = (current: any) => {
-    // Allow only future dates
     return current && current < dayjs().startOf('day');
   }
 
@@ -187,14 +199,18 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     border: '2px solid #000',
     boxShadow: '24px',
     padding : 4,
-    };
+  };
+
   const handleSelectDate = (date: RangeKeyDict) => {
     if(date && date.selection){
-      const start = date.selection?.startDate ? new Date(date.selection.startDate) :new Date()
-      const end = date.selection?.endDate ? new Date(date.selection.endDate) :new Date()
-      setState([{startDate:start, endDate:end, key:'selection'}])
+      const start = date.selection?.startDate ? new Date(date.selection.startDate) : new Date();
+      const end = date.selection?.endDate ? new Date(date.selection.endDate) : new Date();
+      setState([{startDate: start, endDate: end, key: 'selection'}]);
+      setDateStart(dayjs(start).format(dateFormat));
+      setDateEnd(dayjs(end).format(dateFormat));
     }
   }
+
   return !phone ? (
     <div className='my-3'>
       <RangePicker
@@ -219,9 +235,9 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               <h5>Age 13+</h5>
             </div>
             <div className='d-flex align-items-center'>
-              <button disabled={guest === 1 ? true : false} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
+              <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
               <h2>{guest}</h2>
-              <button disabled={guest === khachMax ? true : false} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
+              <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
             </div>
           </div>
           <p className="guest-description">This place has a maximum of {khachMax} people</p>
@@ -274,15 +290,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
         <Box sx={{ ...styleGuest }}>
           <div className='d-flex justify-content-center mt-5'>
             <DateRange
-            editableDateInputs={true}
-            onChange={(item)=>{
-              console.log("item",item)
-              console.log("state",state)
-            //  setState([item.selection])
-            handleSelectDate(item)
-            }}
-            moveRangeOnFirstSelection={false}
-            ranges={state}
+              editableDateInputs={true}
+              onChange={handleSelectDate}
+              moveRangeOnFirstSelection={false}
+              ranges={state}
             />
           </div>
           <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>
@@ -302,9 +313,9 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               <h5>Age 13+</h5>
             </div>
             <div className='d-flex align-items-center'>
-              <button disabled={guest === 1 ? true : false} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
+              <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
               <h2>{guest}</h2>
-              <button disabled={guest === khachMax ? true : false} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
+              <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
             </div>
           </div>
           <p className="guest-description">This place has a maximum of {khachMax} people</p>
@@ -324,7 +335,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               <button type='button' onClick={() => { setOpen(false) }}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
               <h3>{inputFilled ? "Confirm and pay" : "Request to book"}</h3>
             </header>
-            <section className='booking-main' style={{}}>
+            <section className='booking-main'>
               <section className='booking-detail'>
                 <img src={dataDetail.hinhAnh} alt="" />
                 <div>
@@ -338,7 +349,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
                 <div className='booking-room-date mb-3'>
                   <div>
                     <h3>Dates</h3>
-                    <p>{dateDifferent !== 0 && !Number.isNaN(dateDifferent) ? ` ${new Date(dateStart).toLocaleDateString('en-CA')} - ${new Date(dateEnd).toLocaleDateString('en-CA')}` : "Bạn chưa chọn ngày"}</p>
+                    <p>{dateDifferent !== 0 && !Number.isNaN(dateDifferent) ? `${new Date(dateStart).toLocaleDateString('en-CA')} - ${new Date(dateEnd).toLocaleDateString('en-CA')}` : "Bạn chưa chọn ngày"}</p>
                   </div>
                   <h3 className='edit-booking' onClick={() => { setOpenDate(true) }}>Edit</h3>
                 </div>

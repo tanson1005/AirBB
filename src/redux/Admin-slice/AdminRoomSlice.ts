@@ -12,7 +12,7 @@ export const getRoomByPhanTrang = createAsyncThunk(
     async ({pageIndex, keywords}: {pageIndex: number | undefined, keywords: string | undefined})=>{
         try{
             const resp = axiosInterceptorWithCybertoken.get(`/api/phong-thue/phan-trang-tim-kiem?pageIndex=${pageIndex}&pageSize=8${keywords === undefined ? "": `&keyword=${keywords}`}`)
-            return resp
+            return resp;
         }catch(error){
             console.log(error)
         }
@@ -27,7 +27,6 @@ export const adminRoomSlice = createSlice({
     name: 'adminRoomSlice',
     initialState,
     reducers:{
-       
     },
     extraReducers: (build)=>{
         build.addCase(getRoomByPhanTrang.fulfilled,(state,action)=>{

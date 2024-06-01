@@ -41,7 +41,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
-  const [phoneDate] = React.useState<{ startDate: Date, endDate: Date }[]>([]);
+  const [phoneDate, setPhoneDate] = React.useState<{ startDate: Date, endDate: Date }[]>([]);
   const idRoomParam = useParams<{ idDetail?: string }>()?.idDetail;
   const idRoom = typeof idRoomParam === 'string' ? idRoomParam : '';
   const navigate = useNavigate();
@@ -159,8 +159,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
           key: 'selection'
         }
       ]);
+      setPhoneDate([{ startDate: start.toDate(), endDate: end.toDate() }]);
     }
   };
+  
   
   const disabledDate = (current: any) => {
     return current && current < dayjs().startOf('day');
@@ -173,9 +175,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const handleCloseDate = () => {
     setOpenDate(false);
     if (phoneDate.length > 0) {
-      handleDate([dayjs(phoneDate[0].startDate), dayjs(phoneDate[0].endDate)], [dayjs(phoneDate[0].startDate).format(dateFormat), dayjs(phoneDate[0].endDate).format(dateFormat)]);
+      handleDate([dayjs(phoneDate[0].startDate), dayjs(phoneDate[0].endDate)]);
     }
   };
+  
   
   
 
@@ -207,17 +210,19 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     padding: 4,
   };
 
-  const handleSelectDate = (date: RangeKeyDict) => {
-    const start = date.selection.startDate;
-    const end = date.selection.endDate;
-    if (start && end) {
-      const formattedStart = dayjs(start).format(dateFormat);
-      const formattedEnd = dayjs(end).format(dateFormat);
-      setDateStart(formattedStart);
-      setDateEnd(formattedEnd);
-      setState([{ startDate: start, endDate: end, key: 'selection' }]);
-    }
-  };
+const handleSelectDate = (date: RangeKeyDict) => {
+  const start = date.selection.startDate;
+  const end = date.selection.endDate;
+  if (start && end) {
+    const formattedStart = dayjs(start).format(dateFormat);
+    const formattedEnd = dayjs(end).format(dateFormat);
+    setDateStart(formattedStart);
+    setDateEnd(formattedEnd);
+    setState([{ startDate: start, endDate: end, key: 'selection' }]);
+    setPhoneDate([{ startDate: start, endDate: end }]);
+  }
+};
+
   
   
 

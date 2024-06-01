@@ -5,9 +5,9 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DatePicker } from 'antd';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import "./detail.scss"
+import "./detail.scss";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange, RangeKeyDict } from 'react-date-range';
@@ -18,9 +18,10 @@ import swal from 'sweetalert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { AppDispatch } from '../../redux/store'
-import { getListBookedRoom } from '../../redux/Admin-slice/AdminBookingSlice'
+import { AppDispatch } from '../../redux/store';
+import { getListBookedRoom } from '../../redux/Admin-slice/AdminBookingSlice';
 import useCheckAvailableCount from './handleCheckAvailable';
+
 
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
@@ -40,7 +41,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
-  const [phoneDate, setPhoneDate] = React.useState<DateRange[]>([]);
+  const [phoneDate] = React.useState<{ startDate: Date, endDate: Date }[]>([]);
   const idRoomParam = useParams<{ idDetail?: string }>()?.idDetail;
   const idRoom = typeof idRoomParam === 'string' ? idRoomParam : '';
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const [dateDifferent, setDateDifferent] = React.useState(0);
   const [state, setState] = React.useState([
     {
-      startDate: new Date(), 
+      startDate: new Date(),
       endDate: new Date(),
       key: 'selection'
     }
@@ -65,9 +66,10 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const availableCount = useCheckAvailableCount(idRoom || '', dateStart, dateEnd);
 
   React.useEffect(() => {
-    setDateDifferent(Math.ceil(Math.abs(Date.parse(dateEnd) - Date.parse(dateStart)) / (1000 * 60 * 60 * 24)));
-    setInputFilled(dateDifferent !== 0 && dateEnd !== "" && dateStart !== "" && guest !== 0);
-  }, [dateEnd, dateStart, dateDifferent, guest]);
+    const dateDiff = Math.ceil(Math.abs(Date.parse(dateEnd) - Date.parse(dateStart)) / (1000 * 60 * 60 * 24));
+    setDateDifferent(dateDiff);
+    setInputFilled(dateDiff !== 0 && dateEnd !== "" && dateStart !== "" && guest !== 0);
+  }, [dateEnd, dateStart, guest]);
 
   React.useEffect(() => {
     const savedData = localStorage.getItem('savedData');
@@ -93,11 +95,11 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 
   const handleGuest = (index: number) => {
     setGuest(guest + index);
-  }
+  };
 
   const handleBooking = async () => {
     if (!inputFilled) {
-      swal("Bạn chưa điền ngày đến ngày đi!", { icon: "error" })
+      swal("Bạn chưa điền ngày đến ngày đi!", { icon: "error" });
     } else {
       if (getLocal(ACCESS_USER_ID)) {
         if (availableCount < 1) {
@@ -108,19 +110,19 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
               ngayDi: dateEnd,
               soLuongKhach: guest,
               maNguoiDung: getLocal(ACCESS_USER_ID)
-            }
-            await axiosInterceptorWithCybertoken.post("/api/dat-phong", value)
-            setDateEnd("")
-            setDateStart("")
-            setGuest(1)
-            swal("Thuê phòng thành công!", { icon: "success" })
-            navigate('/Detail/profile')
+            };
+            await axiosInterceptorWithCybertoken.post("/api/dat-phong", value);
+            setDateEnd("");
+            setDateStart("");
+            setGuest(1);
+            swal("Thuê phòng thành công!", { icon: "success" });
+            navigate('/Detail/profile');
           } catch (err) {
-            swal("Thuê phòng thất bại!", { icon: "error" })
-            console.log(err)
+            swal("Thuê phòng thất bại!", { icon: "error" });
+            console.log(err);
           }
         } else {
-          swal("Phòng hiện tại không có sẵn trong ngày bạn đã đặt!", { icon: "error" })
+          swal("Phòng hiện tại không có sẵn trong ngày bạn đã đặt!", { icon: "error" });
         }
       } else {
         swal({
@@ -132,18 +134,18 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
         }).then((willDelete) => {
           if (willDelete) {
             swal("Bạn đã được chuyển trang đăng nhập", { icon: "success" });
-            navigate("/auth/login")
+            navigate("/auth/login");
           } else {
             swal("Bạn sẽ tiếp tục với tư cách là khách!");
-            navigate("/")
+            navigate("/");
           }
         });
       }
     }
-  }
+  };
 
-  const handleDate = (dates: [dayjs.Dayjs, dayjs.Dayjs] | null) => {
-    if (dates && dates.length) {
+  const handleDate = (dates: [Dayjs | null, Dayjs | null] | null) => {
+    if (dates && dates[0] && dates[1]) {
       const [start, end] = dates;
       const formattedStart = start.format(dateFormat);
       const formattedEnd = end.format(dateFormat);
@@ -158,11 +160,11 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
         }
       ]);
     }
-  }
-
+  };
+  
   const disabledDate = (current: any) => {
     return current && current < dayjs().startOf('day');
-  }
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -170,8 +172,12 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
 
   const handleCloseDate = () => {
     setOpenDate(false);
-    handleDate(phoneDate);
+    if (phoneDate.length > 0) {
+      handleDate([dayjs(phoneDate[0].startDate), dayjs(phoneDate[0].endDate)], [dayjs(phoneDate[0].startDate).format(dateFormat), dayjs(phoneDate[0].endDate).format(dateFormat)]);
+    }
   };
+  
+  
 
   const handleCloseGuest = () => {
     setOpenGuest(false);
@@ -198,28 +204,31 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     backgroundColor: 'background.paper',
     border: '2px solid #000',
     boxShadow: '24px',
-    padding : 4,
+    padding: 4,
   };
 
   const handleSelectDate = (date: RangeKeyDict) => {
-    if(date && date.selection){
-      const start = date.selection?.startDate ? new Date(date.selection.startDate) : new Date();
-      const end = date.selection?.endDate ? new Date(date.selection.endDate) : new Date();
-      setState([{startDate: start, endDate: end, key: 'selection'}]);
-      setDateStart(dayjs(start).format(dateFormat));
-      setDateEnd(dayjs(end).format(dateFormat));
+    const start = date.selection.startDate;
+    const end = date.selection.endDate;
+    if (start && end) {
+      const formattedStart = dayjs(start).format(dateFormat);
+      const formattedEnd = dayjs(end).format(dateFormat);
+      setDateStart(formattedStart);
+      setDateEnd(formattedEnd);
+      setState([{ startDate: start, endDate: end, key: 'selection' }]);
     }
-  }
+  };
+  
+  
 
   return !phone ? (
     <div className='my-3'>
       <RangePicker
-        className='detail-range-picker'
-        onChange={handleDate}
-        format={dateFormat}
-        disabledDate={disabledDate}
-      />
-
+  className='detail-range-picker'
+  onChange={handleDate}
+  format={dateFormat}
+  disabledDate={disabledDate}
+/>
       <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
         <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Guest</InputLabel>
         <Select
@@ -390,6 +399,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       </Modal>
     </div>
   );
-}
+};
 
 export default SelectVariants;

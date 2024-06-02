@@ -1,5 +1,10 @@
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Templates
 import HomeTemplate from './Template/Home-template/HomeTemplate';
@@ -23,33 +28,37 @@ const ManageRoom = React.lazy(() => import('./Components/Admin/ManageRoom'));
 const ManageBookedRoom = React.lazy(() => import('./Components/Admin/ManageBookedRoom'));
 const ManageLocation = React.lazy(() => import('./Components/Admin/ManageLocation'));
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route path="/" element={<HomeTemplate />}>
+        <Route path=":idLocation" element={<RoomList />} />
+        <Route index element={<HomePage />} />
+      </Route>
+      <Route path="detail" element={<DetailTemplate />}>
+        <Route path="profile" element={<PersonalInformation />} />
+      </Route>
+      <Route path="room" element={<RoomTemplate />}>
+        <Route path=":idDetail" element={<Detail />} />
+      </Route>
+      <Route path="auth" element={<RegisterTemplate />}>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+      </Route>
+      <Route path="@@admin" element={<AdminTemplate />}>
+        <Route path="user" element={<ManageUser />} />
+        <Route path="roomdetail" element={<ManageRoom />} />
+        <Route path="booked" element={<ManageBookedRoom />} />
+        <Route path="location" element={<ManageLocation />} />
+      </Route>
+    </Route>
+  )
+);
+
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomeTemplate />}>
-            <Route path=":idLocation" element={<RoomList />} />
-            <Route path="/" element={<HomePage />} />
-          </Route>
-          <Route path="detail" element={<DetailTemplate />}>
-            <Route path="profile" element={<PersonalInformation />} />
-          </Route>
-          <Route path="room" element={<RoomTemplate />}>
-            <Route path=":idDetail" element={<Detail />} />
-          </Route>
-          <Route path="auth" element={<RegisterTemplate />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          </Route>
-          <Route path="@@admin" element={<AdminTemplate />}>
-            <Route path="user" element={<ManageUser />} />
-            <Route path="roomdetail" element={<ManageRoom />} />
-            <Route path="booked" element={<ManageBookedRoom />} />
-            <Route path="location" element={<ManageLocation />} />
-          </Route>
-        </Routes>
-      </Router>
+      <RouterProvider router={router} />
     </Suspense>
   );
 }

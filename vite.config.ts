@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,8 +8,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: process.env.PORT ? parseInt(process.env.PORT) : 4000,
   },
-  resolve:{
-    alias:{
+  resolve: {
+    alias: {
       src: '/src',
       public: '/public'
     }
@@ -40,4 +40,4 @@ export default defineConfig({
       'swiper'
     ]
   }
-})
+});

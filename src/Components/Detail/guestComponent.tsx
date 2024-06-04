@@ -235,7 +235,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
   disabledDate={disabledDate}
 />
       <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
-        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Guest</InputLabel>
+        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Khách</InputLabel>
         <Select
           sx={{ backgroundColor: "white" }}
           labelId="demo-simple-select-filled-label"
@@ -245,8 +245,8 @@ const handleSelectDate = (date: RangeKeyDict) => {
         >
           <div className='d-flex align-items-center justify-content-between'>
             <div className='ml-5 mt-4'>
-              <h3>Adults</h3>
-              <h5>Age 13+</h5>
+              <h3>Người lớn</h3>
+              <h5>Tuổi 13+</h5>
             </div>
             <div className='d-flex align-items-center'>
               <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
@@ -254,17 +254,17 @@ const handleSelectDate = (date: RangeKeyDict) => {
               <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
             </div>
           </div>
-          <p className="guest-description">This place has a maximum of {khachMax} people</p>
-          <button className="guest-close mb-4" style={{ marginLeft: "80%" }}>Close</button>
+          <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
+          <button className="guest-close mb-4" style={{ marginLeft: "80%" }}>Đóng</button>
         </Select>
       </FormControl>
       <button className="detail-submit-guest" type='button' onClick={handleBooking}>
-        {!inputFilled ? "Thuê nhà" : "Check availability"}
+        {!inputFilled ? "Thuê nhà" : "Kiểm Tra"}
       </button>
 
       {!inputFilled ?
         <p className='text-center'>
-          Enter dates and number of guests to check the total trip price, including additional fees and any taxes.
+          Nhập ngày và số lượng khách để kiểm tra tổng giá chuyến đi, bao gồm các khoản phí bổ sung và mọi khoản thuế.
         </p>
         :
         <div>
@@ -273,7 +273,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
           </p>
           <div className='detail-fees'>
             <p>
-              ${giaTien} USD x {dateDifferent} nights
+              ${giaTien} USD x {dateDifferent} / Đêm
             </p>
             <p>
               {giaTien * dateDifferent} USD
@@ -282,7 +282,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
           <hr />
           <div className='detail-fees-total'>
             <p>
-              Total
+            Tổng cộng
             </p>
             <p>
               {giaTien * dateDifferent} USD
@@ -293,7 +293,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
     </div>
   ) : (
     <div>
-      <Button onClick={handleOpen}>Reserve</Button>
+      <Button onClick={handleOpen}>Đặt Phòng</Button>
 
       <Modal
         open={openDate}
@@ -310,7 +310,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
               ranges={state}
             />
           </div>
-          <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Close</button>
+          <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Đóng</button>
         </Box>
       </Modal>
 
@@ -323,8 +323,8 @@ const handleSelectDate = (date: RangeKeyDict) => {
         <Box sx={{ ...styleGuest }}>
           <div className='d-flex align-items-center justify-content-between'>
             <div className='ml-5 mt-4'>
-              <h3>Adults</h3>
-              <h5>Age 13+</h5>
+              <h3>Người lớn</h3>
+              <h5>Tuổi 13+</h5>
             </div>
             <div className='d-flex align-items-center'>
               <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
@@ -332,7 +332,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
               <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
             </div>
           </div>
-          <p className="guest-description">This place has a maximum of {khachMax} people</p>
+          <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
           <button className="guest-close mb-4 ml-5" onClick={handleCloseGuest}>Close</button>
         </Box>
       </Modal>
@@ -347,7 +347,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
           <div className="detail-phone-box">
             <header className='booking-header'>
               <button type='button' onClick={() => { setOpen(false) }}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
-              <h3>{inputFilled ? "Confirm and pay" : "Request to book"}</h3>
+              <h3>{inputFilled ? "Xác nhận và thanh toán" : "Yêu cầu đặt chỗ"}</h3>
             </header>
             <section className='booking-main'>
               <section className='booking-detail'>
@@ -359,44 +359,42 @@ const handleSelectDate = (date: RangeKeyDict) => {
               </section>
 
               <section className='booking-room'>
-                <h1 className='mt-2 mb-5'>Your trip</h1>
+                <h1 className='mt-2 mb-5'>Đặt phòng của bạn</h1>
                 <div className='booking-room-date mb-3'>
                   <div>
-                    <h3>Dates</h3>
+                    <h3>Ngày</h3>
                     <p>{dateDifferent !== 0 && !Number.isNaN(dateDifferent) ? `${new Date(dateStart).toLocaleDateString('en-CA')} - ${new Date(dateEnd).toLocaleDateString('en-CA')}` : "Bạn chưa chọn ngày"}</p>
                   </div>
                   <h3 className='edit-booking' onClick={() => { setOpenDate(true) }}>Edit</h3>
                 </div>
                 <div className='booking-room-guest'>
                   <div>
-                    <h3>Guest</h3>
-                    <p>{guest} guest</p>
+                    <h3>Khách</h3>
+                    <p>{guest} khách</p>
                   </div>
                   <h3 className='edit-booking' onClick={() => { setOpenGuest(true) }}>Edit</h3>
                 </div>
               </section>
 
               <section className='booking-payment'>
-                <h1>Choose how to pay</h1>
+                <h1>Chọn cách thanh toán</h1>
                 <div>
                   <div className={`form-check ${!checkPayment ? "active" : ""}`}>
                     <label className="form-check-label" htmlFor="flexRadioDefault1">
-                      <h2>Pay in full</h2>
-                      <p>{inputFilled ? `Trả đầy đủ ${giaTien} USD now` : `Trả ${giaTien} USD`}</p>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={!checkPayment} onChange={() => { setCheckPayment(false) }} />
-                      <span className="checkmark"></span>
+                      <h2 className='h2-pay'>Đặt chỗ</h2>
+                      <p>{inputFilled ? `Bạn chỉ cần đặt chỗ với ${(giaTien * dateDifferent * 0.5).toLocaleString()} USD ngay bây giờ` : `Trả ${giaTien.toLocaleString()} USD`}</p>
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={checkPayment} onChange={() => { setCheckPayment(true) }} />
                     </label>
                   </div>
                   <div className={`form-check ${checkPayment ? "active" : ""}`}>
                     <label className="form-check-label" htmlFor="flexRadioDefault2">
-                      <h2>Just Reserve</h2>
-                      <p>{inputFilled ? `Đặt chỗ giữ ${giaTien * dateDifferent} USD ngay bây giờ` : `Đặt chỗ giữ ${giaTien} USD`}</p>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={checkPayment} onChange={() => { setCheckPayment(true) }} />
-                      <span className="checkmark"></span>
+                      <h2>Đầy đủ</h2>
+                      <p>{inputFilled ? `Bạn có thể thanh toán đầy đủ với ${((giaTien * dateDifferent).toLocaleString())} USD ngay bây giờ` : `Đặt chỗ giữ ${giaTien.toLocaleString()} USD`}</p>
+                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={!checkPayment} onChange={() => { setCheckPayment(false) }} />
                     </label>
                   </div>
                 </div>
-                <button className='detail-submit-guest' type='button' onClick={() => { handleBooking(); setOpen(false) }}>{inputFilled ? "Confirm and pay" : "Request to book"}</button>
+                <button className='detail-submit-guest' type='button' onClick={() => { handleBooking(); setOpen(false) }}>{inputFilled ? "Xác nhận và thanh toán" : "Yêu cầu đặt chỗ"}</button>
               </section>
             </section>
           </div>

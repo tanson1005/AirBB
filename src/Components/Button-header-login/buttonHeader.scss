@@ -1,86 +1,50 @@
-.ant-modal-content {
-  padding: 0 !important;
-  width: 30%;
-  margin-left: auto;
+.ant-modal-content{
+    padding: 0!important;
+    width: 40%;
+    margin-left: auto;
+    .modal-content-header,
+    .modal-content-footer{
+        border-bottom: 0.5px rgba(128, 128, 128, 0.54) solid;
+        padding: 1rem 1rem;
+        a{
+            &:hover{
+                background-color: #80808029;
+            }
+            &:first-child{
+                font-weight: 600;
+                color: #000000;
+            }
+            display: block;
+            font-size: 1.6rem;
+            line-height: 3.6rem;
+            text-decoration: none;
+            color: #808080;
+        }
+    }
+    .modal-content-footer{
+        .help-btn{
+            color: #808080;
+        }
+    }
+}
 
-  .modal-content-header,
-  .modal-content-footer {
-      border: 2px #9999FF double;
-
-      a {
-          &:hover {
-              background-color: #e23555;
-          }
-
-          &:first-child {
-              font-weight: 600;
-              color: #000000;
-          }
-
-          display: block;
-          font-size: 1.6rem;
-          line-height: 3.6rem;
-          text-decoration: none;
-          color: #000000;
-      }
-  }
-
-  .modal-content-footer {
-      .help-btn {
-          color: #000000;
-      }
-  }
-
-  .button-header {
-      outline: unset;
-      width: 7.7rem;
-      height: 4.2rem;
-      padding: 0;
-      border-radius: 50px;
-  }
-
-  @media (max-width: 1024px) {
-      width: 50%;
-      .modal-content-header,
-      .modal-content-footer {
-          a {
-              font-size: 1.4rem;
-              line-height: 3.2rem;
-          }
-      }
-      .button-header {
-          width: 6.7rem;
-          height: 3.6rem;
-      }
-  }
-
-  @media (max-width: 768px) {
-      width: 70%;
-      .modal-content-header,
-      .modal-content-footer {
-          a {
-              font-size: 1.2rem;
-              line-height: 2.8rem;
-          }
-      }
-      .button-header {
-          width: 5.7rem;
-          height: 3.2rem;
-      }
-  }
-
-  @media (max-width: 576px) {
-      width: 90%;
-      .modal-content-header,
-      .modal-content-footer {
-          a {
-              font-size: 1rem;
-              line-height: 2.4rem;
-          }
-      }
-      .button-header {
-          width: 4.7rem;
-          height: 2.8rem;
-      }
-  }
+@media screen and (max-width:1280px) {
+    .ant-modal-content{
+        margin-left: 47%;
+    }
+}
+@media screen and (max-width:992px) {
+    .ant-modal-content{
+        margin-left: 40%;
+    }
+}
+@media screen and (max-width:768px) {
+    .ant-modal-content{
+        margin-left: 32%;
+    }
+}
+@media screen and (max-width:414px) {
+    .ant-modal-content{
+        margin: auto;
+    }
 }

@@ -93,7 +93,8 @@ function Detail({ dataDetail, location, comment, commentIdList }: IProps) {
                     <hr />
                     <div className='detail-sleep'>
                         <h2>Nơi bạn ngủ</h2>
-                        <img src="/src/assets/Image/bed.jpeg" alt="Bed" />
+                        <img src="/src/assets/Image/bed.jpg" alt="Bed" />
+                        <img src="/src/assets/Image/bed1.jpg" alt="Bed" />
                         <h3>Giường</h3>
                         <p>{dataDetail.giuong} cái giường</p>
                     </div>

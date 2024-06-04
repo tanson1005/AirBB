@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { IBookRoom } from '../../constant/constant';
 import { axiosInterceptorWithCybertoken } from '../../services/services';
 import RoomItem from '../Room-item/RoomItem';
 import { Collapse } from 'antd';
 import { UpdateBooking } from './UpdateBooking';
+import { format } from 'date-fns';
 
-
-interface IProps{ 
-    bookRoom: IBookRoom | any
-    index: number
+interface IProps { 
+    bookRoom: IBookRoom | any;
+    index: number;
 }
 
-function BookRoom({bookRoom,index}: IProps){
-    const [bookRoomList, setBookRoom]= useState({
+function BookRoom({ bookRoom, index }: IProps) {
+    const [bookRoomList, setBookRoom] = useState({
         id: 0,
-        tenPhong:'',
+        tenPhong: '',
         tivi: false,
         phongNgu: 0,
         phongTam: 0,
@@ -29,42 +29,62 @@ function BookRoom({bookRoom,index}: IProps){
         bep: false,
         dieuHoa: false,
         doXe: false,
-        moTa:'',
+        moTa: '',
         hinhAnh: '',
         hoBoi: false,
-    })
+    });
 
     useEffect(() => { 
-        try{ 
-            const resp = async() => await axiosInterceptorWithCybertoken.get(`/api/phong-thue/${bookRoom.maPhong}`)
-            resp().then((response) => {
-                setBookRoom(response.data.content)})
-            
-        }catch(err){ 
-            console.log(err)
+        const fetchRoomDetails = async () => {
+            try {
+                const response = await axiosInterceptorWithCybertoken.get(`/api/phong-thue/${bookRoom?.maPhong}`);
+                console.log("API Response: ", response.data); // Log the API response
+                setBookRoom(response?.data?.content ?? {});
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        if (bookRoom?.maPhong) {
+            fetchRoomDetails();
         }
-    }, [bookRoom])
+    }, [bookRoom]);
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const formattedDate = format(date, 'dd-MM-yyyy');
+        const formattedTime = format(date, 'HH:mm');
+        return `${formattedDate} Bạn đã Check-In lúc: ${formattedTime}`;
+    };
+
+    const formatDateOut = (dateString: string) => {
+        const date = new Date(dateString);
+        const formattedDate = format(date, 'dd-MM-yyyy');
+        const formattedTime = format(date, 'HH:mm');
+        return `${formattedDate} Bạn đã Check-Out lúc: ${formattedTime}`;
+    };
+
     return (
         <div>
-            <hr style={{border:"solid 1px black", }}/>
+            <hr style={{ border: "solid 1px black" }} />
             <h2>Phòng {index + 1}</h2>
-            <RoomItem listRoomItem={bookRoomList}/>
+            <RoomItem listRoomItem={bookRoomList} />
             <Collapse
-                items={[{ key: '1', label: 'Hiển thị thêm thông tin', children: 
-                <div>
-                    <h3>Ngày đến: <span style={{fontWeight: "400"}}>{bookRoom.ngayDen}</span></h3>
-                    <h3>Ngày đi: <span style={{fontWeight: "400"}}>{bookRoom.ngayDi}</span></h3>
-                    <h3>Số khách: <span style={{fontWeight: "400"}}>{bookRoom.soLuongKhach}</span></h3>
-                    <div className='d-flex justify-content-end'>
-                        <UpdateBooking bookRoom={bookRoom} khachMax={bookRoomList.khach}/>
+                items={[{
+                    key: '1', label: 'Hiển thị thêm thông tin', children: 
+                    <div>
+                        <h3>Ngày đến: <span style={{ fontWeight: "400" }}>{bookRoom?.ngayDen ? formatDate(bookRoom.ngayDen) : ''}</span></h3>
+                        <h3>Ngày đi: <span style={{ fontWeight: "400" }}>{bookRoom?.ngayDi ? formatDateOut(bookRoom.ngayDi) : ''}</span></h3>
+                        <h3>Số khách: <span style={{ fontWeight: "400" }}>{bookRoom?.soLuongKhach}</span></h3>
+                        <div className='d-flex justify-content-end'>
+                            <UpdateBooking bookRoom={bookRoom} khachMax={bookRoomList?.khach ?? 0} />
+                        </div>
                     </div>
-                </div>
-            }]}
+                }]}
             />
-
-            <hr style={{border:"solid 1px black", }}/>
+            <hr style={{ border: "solid 1px black" }} />
         </div> 
-    )
+    );
 }
 
-export default BookRoom
+export default BookRoom;

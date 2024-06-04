@@ -9,6 +9,7 @@ import { getLocal } from '../../utils/utils';
 import { CardSlider } from '../CardSlider/cardslider';
 // static img file
 import ava from '../../assets/Image/du-lich-da-nang.jpg';
+import { Icon } from '@mui/material';
 
 interface IProps {
     dataDetail: IRoomDetail;
@@ -92,12 +93,13 @@ function Detail({ dataDetail, location, comment, commentIdList }: IProps) {
                     </div>
                     <hr />
                     <div className='detail-sleep'>
-                        <h2>Nơi bạn ngủ</h2>
-                        <img className="img-bed" src="/src/assets/Image/bedd.jpg" alt="Bed" />
-                        <img className="img-bed1 "src="/src/assets/Image/bedd1.jpg" alt="Bed" />
+                    <h2>Nơi bạn ngủ</h2>
+                        <Icon component="img" className="img-bed" src="/src/assets/Image/bedd.jpg" alt="Bed" />
+                        <Icon component="img" className="img-bed1" src="/src/assets/Image/bedd1.jpg" alt="Bed" />
                         <h3>Giường</h3>
                         <p>{dataDetail.giuong} cái giường</p>
                     </div>
+
                     <hr />
                     <div className='detail-utility'>
                         <h2>Tiện Nghi</h2>

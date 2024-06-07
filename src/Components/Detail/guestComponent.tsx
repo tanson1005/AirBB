@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -39,7 +39,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   const dispatch = useDispatch<AppDispatch>();
   const SavedData = getLocal('savedData')
   const [open, setOpen] = React.useState(false);
-  const [checkPayment, setCheckPayment] = React.useState(false);
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
   const [phoneDate, setPhoneDate] = React.useState<{ startDate: Date, endDate: Date }[]>([]);
@@ -59,6 +58,8 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       key: 'selection'
     }
   ]);
+
+  const [bookingSuccess, setBookingSuccess] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(getListBookedRoom());
@@ -118,6 +119,8 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
             setGuest(1);
             swal("Thuê phòng thành công!", { icon: "success" });
             localStorage.removeItem('savedData');
+            // 2. Set bookingSuccess to true upon successful booking
+            setBookingSuccess(true);
             navigate('/room/' + idRoom);
           } catch (err) {
             swal("Thuê phòng thất bại!", { icon: "error" });
@@ -225,183 +228,199 @@ const handleSelectDate = (date: RangeKeyDict) => {
   
   
 
-  return !phone ? (
-    <div className='my-3'>
-      <RangePicker
-  className='detail-range-picker'
-  onChange={handleDate}
-  format={dateFormat}
-  disabledDate={disabledDate}
-/>
-      <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
-        <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Khách</InputLabel>
-        <Select
-          sx={{ backgroundColor: "white" }}
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
-          value={inputGuest}
-          onChange={handleChange}
-        >
-          <div className='d-flex align-items-center justify-content-between'>
-            <div className='ml-5 mt-4'>
-              <h3>Người lớn</h3>
-              <h5>Tuổi 13+</h5>
-            </div>
-            <div className='d-flex align-items-center'>
-              <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
-              <h2>{guest}</h2>
-              <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
-            </div>
-          </div>
-          <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
-          <button className="guest-close mb-4" style={{ marginLeft: "80%" }}>Đóng</button>
-        </Select>
-      </FormControl>
-      <button className="detail-submit-guest" type='button' onClick={handleBooking}>
-        {!inputFilled ? "Thuê nhà" : "Kiểm Tra"}
-      </button>
-
-      {!inputFilled ?
-        <p className='text-center'>
-          Nhập ngày và số lượng khách để kiểm tra tổng giá chuyến đi, bao gồm các khoản phí bổ sung và mọi khoản thuế.
-        </p>
-        :
-        <div>
-          <p className='text-center'>
-            Bạn chưa bị tính tiền
-          </p>
-          <div className='detail-fees'>
-            <p>
-              ${giaTien} USD x {dateDifferent} / Đêm
-            </p>
-            <p>
-              {giaTien * dateDifferent} USD
-            </p>
-          </div>
-          <hr />
-          <div className='detail-fees-total'>
-            <p>
-            Tổng cộng
-            </p>
-            <p>
-              {giaTien * dateDifferent} USD
-            </p>
-          </div>
-        </div>
-      }
-    </div>
+return (
+  bookingSuccess ? (
+    <Navigate to={'/room/' + idRoom} />
   ) : (
-    <div>
-      <Button onClick={handleOpen}>Đặt Phòng</Button>
-
-      <Modal
-        open={openDate}
-        onClose={handleCloseDate}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...styleGuest }}>
-          <div className='d-flex justify-content-center mt-5'>
-            <DateRange
-              editableDateInputs={true}
-              minDate={new Date()}
-              onChange={handleSelectDate}
-              moveRangeOnFirstSelection={false}
-              ranges={state}
-            />
-          </div>
-          <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Đóng</button>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={openGuest}
-        onClose={handleCloseGuest}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...styleGuest }}>
-          <div className='d-flex align-items-center justify-content-between'>
-            <div className='ml-5 mt-4'>
-              <h3>Người lớn</h3>
-              <h5>Tuổi 13+</h5>
+    !phone ? (
+      <div className='my-3'>
+        <RangePicker
+          className='detail-range-picker'
+          onChange={handleDate}
+          format={dateFormat}
+          disabledDate={disabledDate}
+        />
+        <FormControl variant="filled" sx={{ color: "black", width: "100%", border: "solid 1px", padding: "0.5rem", borderRadius: "0 0 10px 10px" }}>
+          <InputLabel id="demo-simple-select-filled-label" sx={{ fontSize: "2rem", color: "black" }}>{guest} Khách</InputLabel>
+          <Select
+            sx={{ backgroundColor: "white" }}
+            labelId="demo-simple-select-filled-label"
+            id="demo-simple-select-filled"
+            value={inputGuest}
+            onChange={handleChange}
+          >
+            <div className='d-flex align-items-center justify-content-between'>
+              <div className='ml-5 mt-4'>
+                <h3>Người lớn</h3>
+                <h5>Tuổi 13+</h5>
+              </div>
+              <div className='d-flex align-items-center'>
+                <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
+                <h2>{guest}</h2>
+                <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
+              </div>
             </div>
-            <div className='d-flex align-items-center'>
-              <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
-              <h2>{guest}</h2>
-              <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
+            <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
+            <button className="guest-close mb-4" style={{ marginLeft: "80%" }}>Đóng</button>
+          </Select>
+        </FormControl>
+        <button className="detail-submit-guest" type='button' onClick={handleBooking}>
+          {!inputFilled ? "Thuê nhà" : "Kiểm Tra"}
+        </button>
+
+        {!inputFilled ?
+          <p className='text-center'>
+            Nhập ngày và số lượng khách để kiểm tra tổng giá chuyến đi, bao gồm các khoản phí bổ sung và mọi khoản thuế.
+          </p>
+          :
+          <div>
+            <p className='text-center'>
+              Bạn chưa bị tính tiền
+            </p>
+            <div className='detail-fees'>
+              <p>
+                ${giaTien} USD x {dateDifferent} / Đêm
+              </p>
+              <p>
+                {giaTien * dateDifferent} USD
+              </p>
+            </div>
+            <hr />
+            <div className='detail-fees-total'>
+              <p>
+              Tổng cộng
+              </p>
+              <p>
+                {giaTien * dateDifferent} USD
+              </p>
             </div>
           </div>
-          <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
-          <button className="guest-close mb-4 ml-5" onClick={handleCloseGuest}>Close</button>
-        </Box>
-      </Modal>
+        }
+      </div>
+    ) : (
+      <div>
+        <Button onClick={handleOpen}>Đặt Phòng</Button>
 
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className="detail-phone-box">
-            <header className='booking-header'>
-              <button type='button' onClick={() => { setOpen(false) }}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
-              <h3>{inputFilled ? "Xác nhận và thanh toán" : "Yêu cầu đặt chỗ"}</h3>
-            </header>
-            <section className='booking-main'>
-              <section className='booking-detail'>
-                <img src={dataDetail.hinhAnh} alt="" />
-                <div>
-                  <p>Phòng</p>
-                  <h5>{dataDetail.tenPhong}</h5>
-                </div>
-              </section>
+        <Modal
+          open={openDate}
+          onClose={handleCloseDate}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...styleGuest }}>
+            <div className='d-flex justify-content-center mt-5'>
+              <DateRange
+                editableDateInputs={true}
+                minDate={new Date()}
+                onChange={handleSelectDate}
+                moveRangeOnFirstSelection={false}
+                ranges={state}
+              />
+            </div>
+            <button className="guest-close my-4 ml-5" onClick={handleCloseDate}>Đóng</button>
+          </Box>
+        </Modal>
 
-              <section className='booking-room'>
-                <h1 className='mt-2 mb-5'>Đặt phòng của bạn</h1>
-                <div className='booking-room-date mb-3'>
+        <Modal
+          open={openGuest}
+          onClose={handleCloseGuest}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...styleGuest }}>
+            <div className='d-flex align-items-center justify-content-between'>
+              <div className='ml-5 mt-4'>
+                <h3>Người lớn</h3>
+                <h5>Tuổi 13+</h5>
+              </div>
+              <div className='d-flex align-items-center'>
+                <button disabled={guest === 1} id="decGuest" type="button" className='guest-Button' onClick={() => { handleGuest(-1) }}>-</button>
+                <h2>{guest}</h2>
+                <button disabled={guest === khachMax} id="incGuest" type="button" className='guest-Button' onClick={() => { handleGuest(1) }}>+</button>
+              </div>
+            </div>
+            <p className="guest-description">Nơi này có tối đa {khachMax} Người</p>
+            <button className="guest-close mb-4 ml-5" onClick={handleCloseGuest}>Close</button>
+          </Box>
+        </Modal>
+
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <div className="detail-phone-box">
+              <header className='booking-header'>
+                <button type='button' onClick={() => { setOpen(false) }}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
+                <h3>{inputFilled ? "Xác nhận và thanh toán" : "Yêu cầu đặt chỗ"}</h3>
+              </header>
+              <section className='booking-main'>
+                <section className='booking-detail'>
+                  <img src={dataDetail.hinhAnh} alt="" />
                   <div>
-                    <h3>Ngày</h3>
-                    <p>{dateDifferent !== 0 && !Number.isNaN(dateDifferent) ? `${new Date(dateStart).toLocaleDateString('en-CA')} - ${new Date(dateEnd).toLocaleDateString('en-CA')}` : "Bạn chưa chọn ngày"}</p>
+                    <p>Phòng</p>
+                    <h5>{dataDetail.tenPhong}</h5>
                   </div>
-                  <h3 className='edit-booking' onClick={() => { setOpenDate(true) }}>Edit</h3>
-                </div>
-                <div className='booking-room-guest'>
-                  <div>
-                    <h3>Khách</h3>
-                    <p>{guest} khách</p>
-                  </div>
-                  <h3 className='edit-booking' onClick={() => { setOpenGuest(true) }}>Edit</h3>
-                </div>
-              </section>
+                </section>
 
-              <section className='booking-payment'>
-                <h1>Chọn cách thanh toán</h1>
-                <div>
-                  <div className={`form-check ${!checkPayment ? "active" : ""}`}>
-                    <label className="form-check-label" htmlFor="flexRadioDefault1">
-                      <h2 className='h2-pay'>Đặt chỗ</h2>
-                      <p>{inputFilled ? `Bạn chỉ cần đặt chỗ với ${(giaTien * dateDifferent * 0.5).toLocaleString()} USD ngay bây giờ` : `Trả ${giaTien.toLocaleString()} USD`}</p>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={checkPayment} onChange={() => { setCheckPayment(true) }} />
-                    </label>
+                <section className='booking-room'>
+                  <h1 className='mt-2 mb-5'>Đặt phòng của bạn</h1>
+                  <div className='booking-room-date mb-3'>
+                    <div>
+                      <h3>Ngày</h3>
+                      <p>{dateDifferent !== 0 && !Number.isNaN(dateDifferent) ? `${new Date(dateStart).toLocaleDateString('en-CA')} - ${new Date(dateEnd).toLocaleDateString('en-CA')}` : "Bạn chưa chọn ngày"}</p>
+                    </div>
+                    <h3 className='edit-booking' onClick={() => { setOpenDate(true) }}>Edit</h3>
                   </div>
-                  <div className={`form-check ${checkPayment ? "active" : ""}`}>
-                    <label className="form-check-label" htmlFor="flexRadioDefault2">
-                      <h2>Đầy đủ</h2>
-                      <p>{inputFilled ? `Bạn có thể thanh toán đầy đủ với ${((giaTien * dateDifferent).toLocaleString())} USD ngay bây giờ` : `Đặt chỗ giữ ${giaTien.toLocaleString()} USD`}</p>
-                      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={!checkPayment} onChange={() => { setCheckPayment(false) }} />
-                    </label>
+                  <div className='booking-room-guest'>
+                    <div>
+                      <h3>Khách</h3>
+                      <p>{guest} khách</p>
+                    </div>
+                    <h3 className='edit-booking' onClick={() => { setOpenGuest(true) }}>Edit</h3>
                   </div>
-                </div>
-                <button className='detail-submit-guest' type='button' onClick={() => { handleBooking(); setOpen(false) }}>{inputFilled ? "Xác nhận và thanh toán" : "Yêu cầu đặt chỗ"}</button>
+                </section>
+                <button className="detail-submit-guest" type='button' onClick={handleBooking}>
+                  {!inputFilled ? "Thuê nhà" : "Kiểm Tra"}
+                </button>
+                {!inputFilled ?
+                  <p className='text-center'>
+                    Nhập ngày và số lượng khách để kiểm tra tổng giá chuyến đi, bao gồm các khoản phí bổ sung và mọi khoản thuế.
+                  </p>
+                  :
+                  <div>
+                    <p className='text-center'>
+                      Bạn chưa bị tính tiền
+                    </p>
+                    <div className='detail-fees'>
+                      <p>
+                        ${giaTien} USD x {dateDifferent} / Đêm
+                      </p>
+                      <p>
+                        {giaTien * dateDifferent} USD
+                      </p>
+                    </div>
+                    <hr />
+                    <div className='detail-fees-total'>
+                      <p>
+                      Tổng cộng
+                      </p>
+                      <p>
+                        {giaTien * dateDifferent} USD
+                      </p>
+                    </div>
+                  </div>
+                }
               </section>
-            </section>
-          </div>
-        </Box>
-      </Modal>
-    </div>
-  );
+            </div>
+          </Box>
+        </Modal>
+      </div>
+    )
+  )
+);
 };
 
 export default SelectVariants;

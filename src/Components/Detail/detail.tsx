@@ -9,6 +9,8 @@ import { getLocal } from '../../utils/utils';
 import { CardSlider } from '../CardSlider/cardslider';
 // static img file
 import ava from '../../assets/Image/du-lich-da-nang.jpg';
+import bedd from '../../assets/Image/bedd.jpg';
+import bedd1 from '../../assets/Image/bedd1.jpg';
 import { Icon } from '@mui/material';
 
 interface IProps {
@@ -94,8 +96,8 @@ function Detail({ dataDetail, location, comment, commentIdList }: IProps) {
                     <hr />
                     <div className='detail-sleep'>
                     <h2>Nơi bạn ngủ</h2>
-                        <Icon component="img" className="img-bed" src="/src/assets/Image/bedd.jpg" alt="Bed" />
-                        <Icon component="img" className="img-bed1" src="/src/assets/Image/bedd1.jpg" alt="Bed" />
+                        <Icon component="img" className="img-bed" src={bedd} alt="Bed" />
+                        <Icon component="img" className="img-bed1" src={bedd1} alt="Bed" />
                         <h3>Giường</h3>
                         <p>{dataDetail.giuong} cái giường</p>
                     </div>

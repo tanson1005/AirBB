@@ -8,13 +8,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { regex, ACCESS_TOKEN, ACCESS_USER_ID } from '../../constant/constant';
 import { FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
-import { setLocal } from '../../utils/utils';
+import { getLocal, setLocal } from '../../utils/utils';
 import swal from 'sweetalert';
 import { axiosInterceptorWithCybertoken } from '../../services/services';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const SavedData = getLocal('savedData')
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +36,11 @@ const LoginForm = () => {
         setLocal(ACCESS_TOKEN, resp.data.content.token);
         setLocal(ACCESS_USER_ID, resp.data.content.user.id);
         swal("Đã đăng nhập thành công!", { icon: "success" });
-        navigate('/');
+        if(SavedData){
+          navigate(`/room/${SavedData.idRoom}`);
+        }else{
+          navigate('/');
+        }
       } catch (error) {
         console.log(error);
         swal("Đăng nhập thất bại!", { icon: "error" });

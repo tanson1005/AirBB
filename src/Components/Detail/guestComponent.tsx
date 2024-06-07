@@ -36,9 +36,10 @@ interface IProps {
 }
 
 const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const SavedData = getLocal('savedData')
   const [open, setOpen] = React.useState(false);
   const [checkPayment, setCheckPayment] = React.useState(false);
-  const dispatch = useDispatch<AppDispatch>();
   const [openGuest, setOpenGuest] = React.useState(false);
   const [openDate, setOpenDate] = React.useState(false);
   const [phoneDate, setPhoneDate] = React.useState<{ startDate: Date, endDate: Date }[]>([]);
@@ -72,9 +73,8 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
   }, [dateEnd, dateStart, guest]);
 
   React.useEffect(() => {
-    const savedData = localStorage.getItem('savedData');
-    if (savedData) {
-      const { dateStart, dateEnd, guest } = JSON.parse(savedData);
+    if (SavedData) {
+      const { dateStart, dateEnd, guest } = SavedData;
       setDateStart(dateStart);
       setDateEnd(dateEnd);
       setGuest(guest);
@@ -85,6 +85,7 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
           key: 'selection'
         }
       ]);
+      handleOpen();
     }
   }, []);
 
@@ -116,7 +117,8 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
             setDateStart("");
             setGuest(1);
             swal("Thuê phòng thành công!", { icon: "success" });
-            navigate('/Detail/profile');
+            localStorage.removeItem('savedData');
+            navigate('/room/' + idRoom);
           } catch (err) {
             swal("Thuê phòng thất bại!", { icon: "error" });
             console.log(err);
@@ -133,11 +135,12 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            localStorage.setItem('savedData', JSON.stringify({idRoom:idRoom, dateStart: dateStart, dateEnd: dateEnd, guest }));
             swal("Bạn đã được chuyển trang đăng nhập", { icon: "success" });
             navigate("/auth/login");
           } else {
-            swal("Bạn sẽ tiếp tục với tư cách là khách!");
-            navigate("/");
+            // swal("Bạn sẽ tiếp tục với tư cách là khách!");
+            // navigate("/");
           }
         });
       }
@@ -151,7 +154,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
       const formattedEnd = end.format(dateFormat);
       setDateStart(formattedStart);
       setDateEnd(formattedEnd);
-      localStorage.setItem('savedData', JSON.stringify({ dateStart: formattedStart, dateEnd: formattedEnd, guest }));
       setState([
         {
           startDate: start.toDate(),
@@ -179,9 +181,6 @@ const SelectVariants: React.FC<IProps> = ({ khachMax, giaTien, phone, dataDetail
     }
   };
   
-  
-  
-
   const handleCloseGuest = () => {
     setOpenGuest(false);
   };
@@ -305,6 +304,7 @@ const handleSelectDate = (date: RangeKeyDict) => {
           <div className='d-flex justify-content-center mt-5'>
             <DateRange
               editableDateInputs={true}
+              minDate={new Date()}
               onChange={handleSelectDate}
               moveRangeOnFirstSelection={false}
               ranges={state}

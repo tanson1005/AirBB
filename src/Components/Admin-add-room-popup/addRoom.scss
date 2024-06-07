@@ -71,10 +71,10 @@
         gap: 2rem;
         padding-right: 1.6rem;
         margin-top: 4rem;
-        flex-wrap: wrap; // Added to prevent overflow
+        flex-wrap: wrap;
         button {
             font-size: 1.6rem;
-            max-width: 100%; // Ensures buttons don't overflow
+            max-width: 100%; 
         }
     }
 }
@@ -170,7 +170,7 @@
 .add-location-modal,
 .update-location-modal {
     height: 400px;
-    background-image: url(../../assets/Image/location.jpg);
+    position: relative;
     background-position: center;
     &::before {
         background-color: #afc5d7b0;

@@ -68,7 +68,7 @@ export function Comment({ currentComment, limit }: IProps) {
             star: 0
         },
         validationSchema: Yup.object().shape({
-            comment: Yup.string().required('Comment can not be empty'),
+            comment: Yup.string().required('Bình luận không được để trống'),
             star: Yup.number().moreThan(0)
         }),
         onSubmit: async (values: any) => {
@@ -85,10 +85,10 @@ export function Comment({ currentComment, limit }: IProps) {
                     dispatch(getCommentByRoomId(String(idRoom?.idDetail)));
                 }
 
-                swal("Comment thành công!", { icon: "success" });
+                swal("Bình luận thành công!", { icon: "success" });
             } catch (error) {
                 console.log(error);
-                swal("Comment thất bại!", { icon: "error" });
+                swal("Bình luậnt thất bại!", { icon: "error" });
             }
         }
     });

@@ -35,25 +35,25 @@ const RegisterForm = () => {
     },
     validationSchema: Yup.object().shape({
       user: Yup.string()
-        .min(6, 'Min is 6 characters')
-        .max(12, 'Max is 12 characters')
-        .required('User cannot be empty'),
+        .min(6, 'Tối thiểu là 6 ký tự')
+        .max(12, 'Tối đa là 12 ký tự')
+        .required('Người dùng không thể trống'),
       password: Yup.string()
-        .required('Password cannot be empty')
-        .min(6, 'Min is 6 characters')
-        .max(12, 'Max is 12 characters')
-        .matches(regex.password, 'Password must contain at least 1 digit, 1 special character, 1 alphabetic character'),
+        .required('Mật khẩu không được để trống')
+        .min(6, 'Tối thiểu là 6 ký tự')
+        .max(12, 'Tối đa là 12 ký tự')
+        .matches(regex.password, 'Mật khẩu phải chứa ít nhất 1 chữ số, 1 ký tự đặc biệt, 1 ký tự chữ cái'),
       checkPassword: Yup.string()
-        .required('Please confirm your password')
-        .oneOf([Yup.ref('password')], 'Passwords must match'),
+        .required('Vui lòng xác nhận mật khẩu của bạn')
+        .oneOf([Yup.ref('password')], 'mật khẩu phải trùng khớp'),
       name: Yup.string()
-        .matches(regex.nameByVietnamese, 'Name has to be valid')
-        .required('Name cannot be empty'),
+        .matches(regex.nameByVietnamese, 'Tên phải hợp lệ')
+        .required('Tên không thể trống'),
       email: Yup.string()
-        .email('This field has to be email')
-        .required('Email cannot be empty'),
+        .email('Trường này phải là email')
+        .required('Email không được để trống'),
       phone: Yup.number()
-        .required('Phone cannot be empty'),
+        .required('Điện thoại không thể trống'),
     }),
     onSubmit: async (values: IValues) => {
       try {

@@ -23,12 +23,12 @@ const LoginForm = () => {
       password: '',
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().email('This field has to be email').required('Email cannot be empty'),
+      email: Yup.string().email('Trường này phải là email').required('Email không được để trống'),
       password: Yup.string()
-        .required('Password cannot be empty')
-        .min(6, 'Min is 6 characters')
-        .max(12, 'Max is 12 characters')
-        .matches(regex.password, 'Password must contain at least 1 digit, 1 special character, 1 alphabetic character'),
+        .required('Mật khẩu không được để trống')
+        .min(6, 'Tối thiểu là 6 ký tự')
+        .max(12, 'Tối đa là 12 ký tự')
+        .matches(regex.password, 'Mật khẩu phải chứa ít nhất 1 chữ số, 1 ký tự đặc biệt, 1 ký tự chữ cái'),
     }),
     onSubmit: async (values) => {
       try {

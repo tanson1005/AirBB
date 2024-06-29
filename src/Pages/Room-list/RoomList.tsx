@@ -36,7 +36,7 @@ function RoomList() {
         </div>
       </div>
       <div className="room-list-right">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.55774659851!2d108.21402507518673!3d16.036521540312595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31421966c1cc3011%3A0x7ffe08b3ab7e4b46!2zOTYgTmfDtCBU4bqldCBU4buRLCBIb8OgIEPGsOG7nW5nIELhuq9jLCBI4bqjaSBDaMOidSwgxJDDoCBO4bq1bmcgNTUyMjAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1686886174045!5m2!1svi!2s" width={600} height={550} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3835.6309969348936!2d108.20993567495296!3d15.980635184686102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31421a5ddd6493f5%3A0xaf68766cc6bfea66!2zMjI2IE5ndXnhu4VuIFF1YW5nIEzDom0sIEhvw6AgWHXDom4sIEPhuqltIEzhu4csIMSQw6AgTuG6tW5nIDU1MDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1719625709365!5m2!1svi!2s"></iframe>
       </div>
     </div>
   )
